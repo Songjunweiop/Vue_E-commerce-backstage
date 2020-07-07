@@ -22,12 +22,13 @@
             prefix-icon="el-icon-lock"
             v-model="form_login.password"
             type="password"
+            @keyup.enter.native="login"
           ></el-input>
         </el-form-item>
 
         <el-form-item class="btns">
-          <el-button type="primary" @click="login">登录</el-button>
-          <el-button type="info" @click="rest">重置</el-button>
+          <el-button type="primary" @click="login" round>登录</el-button>
+          <el-button type="info" @click="rest" round>重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -86,14 +87,19 @@ export default {
 
 <style lang="less" scoped>
 .login_container {
-  background-color: rgb(43, 95, 173);
+  // background-color: rgb(43, 95, 173);
   height: 100%;
+  background-image: url('../assets/images/shuipao.jpg');
+  background-size: cover;
+  background-position:0 60%;
 }
 .login_box {
-  background-color: whitesmoke;
+  // background-color: white;
+  background: rgba(255, 255, 255, 0.8);
   height: 350px;
   width: 460px;
-  border-radius: 7px;
+  // border-radius: 7px;
+  border: white;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -120,7 +126,7 @@ export default {
 
 .login_from {
   position: absolute;
-  bottom: 15%;
+  bottom: 30px;
   width: 80%;
   left: 50%;
   transform: translate(-50%);
@@ -128,5 +134,13 @@ export default {
 .btns {
   display: flex;
   justify-content: center;
+  margin-top: 50px;
+}
+.el-button.is-round {
+    border-radius: 20px;
+    padding: 12px 50px;
+}
+.el-button+.el-button {
+    margin-left: 30px;
 }
 </style>
