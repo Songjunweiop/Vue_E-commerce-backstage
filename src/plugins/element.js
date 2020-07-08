@@ -12,8 +12,11 @@ import {
   PageHeader,
   Pagination,
   Dialog,
-  MessageBox
-
+  MessageBox,
+  Tag,
+  Tree,
+  Select,
+  Option
 
 
 }
@@ -48,3 +51,7 @@ Vue.use(PageHeader)
 Vue.use(Pagination)
 Vue.use(Dialog)
 Vue.prototype.$confirm = MessageBox.confirm
+Vue.use(Tag)
+Vue.use(Tree)
+Vue.use(Select)
+Vue.use(Option)
