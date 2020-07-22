@@ -6,13 +6,193 @@
       <el-breadcrumb-item>商品管理</el-breadcrumb-item>
       <el-breadcrumb-item>商品列表</el-breadcrumb-item>
     </el-breadcrumb>
+
+    <!-- card -->
+    <el-card>
+      <el-row :gutter="30">
+        <el-col :span="6">
+          <!-- 搜索 -->
+          <el-input
+            placeholder="请输入内容"
+            v-model="queryInfo.query"
+            @keyup.enter.native="getGoodsList"
+            class="input-with-select"
+          >
+            <el-button slot="append" icon="el-icon-search" @click="getGoodsList"></el-button>
+          </el-input>
+        </el-col>
+        <el-col :span="6">
+          <el-button type="primary" @click="goAddpage">添加商品</el-button>
+        </el-col>
+      </el-row>
+
+      <el-table :data="goodslist" style="width: 100%">
+        <el-table-column type="index"></el-table-column>
+        <el-table-column label="商品名称" prop="goods_name"></el-table-column>
+        <el-table-column label="商品价格" prop="goods_price" width="150px"></el-table-column>
+        <el-table-column label="商品重量" prop="goods_weight" width="150px"></el-table-column>
+        <el-table-column label="创建时间" prop="add_time" width="200px">
+          <template slot-scope="scope">
+            {{scope.row.add_time | dateFormat}}
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="200px">
+          <template slot-scope="scope">
+            <el-tooltip content="编辑商品" placement="top" :enterable="false">
+              <el-button
+                size="mini"
+                type="primary"
+                icon="el-icon-edit"
+                circle
+                @click="showEditDialog(scope.row.goods_id)"
+              ></el-button>
+            </el-tooltip>
+            <el-tooltip content="删除商品" placement="top" :enterable="false">
+              <el-button
+                size="mini"
+                type="danger"
+                icon="el-icon-delete"
+                circle
+                @click="removeGood(scope.row.goods_id)"
+              ></el-button>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <!-- 分页区域 -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pagenum"
+        :page-sizes="[1, 2, 5, 10]"
+        :page-size="queryInfo.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
+
+      <!-- 修改商品的对话框 -->
+    <el-dialog title="修改商品信息" :visible.sync="editDialogVisible" width="50%">
+      <el-form
+        :model="editForm"
+        ref="editFormRef"
+        label-width="100px"
+        class="demo-ruleForm"
+      >
+        <el-form-item label="商品名称" prop="goods_name">
+          <el-input v-model="editForm.goods_name"></el-input>
+        </el-form-item>
+        <el-form-item label="价格" prop="goods_price">
+          <el-input v-model="editForm.goods_price"></el-input>
+        </el-form-item>
+        <el-form-item label="数量" prop="goods_number">
+          <el-input v-model="editForm.goods_number"></el-input>
+        </el-form-item>
+        <el-form-item label="重量" prop="goods_weight">
+          <el-input v-model="editForm.goods_weight"></el-input>
+        </el-form-item>
+        <!-- <el-form-item label="数量" prop="mobile">
+          <el-input v-model="editForm.goods_number"></el-input>
+        </el-form-item> -->
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editUserChange">确 定</el-button>
+      </span>
+    </el-dialog>
+    </el-card>
   </div>
 </template>
 
 
 <script>
 export default {
-  
+  data() {
+    return {
+      goodslist:[],
+      input:'',
+      total:0,
+      queryInfo:{
+        query:'',
+        pagenum:1,
+        pagesize:5
+      },
+      editDialogVisible:false,
+      editForm:{},
+      
+    }
+  },
+  created(){
+    this.getGoodsList()
+  },
+  methods:{
+    async getGoodsList(){
+      const {data:res} =await this.$http.get('goods',{
+        params:{
+          query:this.queryInfo.query,
+          pagenum:this.queryInfo.pagenum,
+          pagesize:this.queryInfo.pagesize
+        }
+      })
+      if(res.meta.status!==200) return this.$message.error('获取商品列表失败')
+      this.$message.success('获取商品列表成功')
+      // console.log(res)
+      this.goodslist=res.data.goods
+      this.total=res.data.total
+      // console.log(this.queryInfo.query)
+    },
+    handleSizeChange(newSize){
+      this.queryInfo.pagesize = newSize
+      this.getGoodsList()
+    },
+    handleCurrentChange(newPage){
+      this.queryInfo.pagenum=newPage
+      this.getGoodsList()
+    },
+    async showEditDialog(id){
+      const{data:res}=await this.$http.get('goods/'+id)
+      // console.log(id)
+      if(res.meta.status!==200) return this.$message.error('查询商品失败')
+      this.editForm=res.data
+      this.editDialogVisible=true
+
+    },
+    async editUserChange(){
+      // console.log(this.editForm)
+      // console.log(this.editForm.goods_id)
+      // const{data:res} =await this.$http.put('goods/'+this.editForm.goods_id,{
+      //     goods_name:this.editForm.goods_name,
+      //     goods_price:this.editForm.goods_price,
+      //     goods_number:this.editForm.goods_number,
+      //     goods_weight:this.editForm.goods_weight
+      // })
+      // if(res.meta.status!==201) return this.$message.error('更新失败')
+
+      this.editDialogVisible=false
+      this.getGoodsList()
+      this.$message.info('更新商品信息接口维护中')
+    },
+    async removeGood(id){
+      console.log(id)
+      const confirmResult=await this.$confirm('此操作将永久删除该商品, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => err)
+      console.log(confirmResult)
+
+      if (confirmResult !== 'confirm') {
+        return this.$message.info("已取消删除")
+      }
+      const {data:res}= await this.$http.delete('goods/'+id)
+      if(res.meta.status!==200) return this.$message.error('删除失败')
+      this.$message.success('删除商品成功！')
+      this.getGoodsList()
+    },
+    goAddpage(){
+      this.$router.push('/goods/add')
+    }
+  }
 }
 </script>
 

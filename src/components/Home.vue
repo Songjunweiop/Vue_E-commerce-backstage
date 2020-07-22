@@ -55,12 +55,15 @@
         </el-menu>
       </el-aside>
       <!-- 侧边区域结束 -->
+
+
       <!-- 主显示区开始 -->
       <el-main>
         <!-- 路由占位符 -->
         <router-view></router-view>
       </el-main>
       <!-- 主显示区结束 -->
+      
     </el-container>
   </el-container>
 </template>

@@ -33,7 +33,7 @@
         <el-table-column label="邮箱" prop="email"></el-table-column>
         <el-table-column label="电话" prop="mobile"></el-table-column>
         <el-table-column label="角色" prop="role_name"></el-table-column>
-        <el-table-column label="状态" prop>
+        <el-table-column label="状态" >
           <template slot-scope="scope">
             <el-switch v-model="scope.row.mg_state" @change="userStateChanged(scope.row)"></el-switch>
           </template>
@@ -243,12 +243,18 @@ export default {
     async getUserList(){
       console.log('aaaaaaaaaaaaaaaaaaaaaaa')
       const{data: res}= await this.$http.get('users',{
-        params:this.queryInfo
+        // params:this.queryInfo
+        params:{
+          query:this.queryInfo.query,
+          pagenum:this.queryInfo.pagenum,
+          pagesize:this.queryInfo.pagesize
+        }
       })
       // console.log(res)
       if(res.meta.status !==200){
         return this.$message.error('获取用户列表失败')
       }
+      console.log(res)
       this.userlist=res.data.users
       this.total=res.data.total
     },
