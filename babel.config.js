@@ -9,6 +9,8 @@ module.exports = {
         "libraryName": "element-ui",
         "styleLibraryName": "theme-chalk"
       }
-    ]
+    ],
+    // 'transform-remove-console',
+    '@babel/plugin-syntax-dynamic-import'
   ]
 }
