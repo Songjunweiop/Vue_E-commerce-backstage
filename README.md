@@ -18,8 +18,5 @@ npm run build
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-over
-that
-
-撒地方是？？？
+chang1
 
