@@ -18,5 +18,5 @@ npm run build
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-chang1
+change1
 
