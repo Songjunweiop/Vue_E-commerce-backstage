@@ -101,7 +101,8 @@ export default {
     return {
       activeIndex:'0',
       addForm:{
-        goods_cat:[]
+        goods_cat:[],
+        attrs:[]
       },
       addFormRules:{
         goods_name:[{required: true, message:'请输入商品名称', trigger: 'blur'}],

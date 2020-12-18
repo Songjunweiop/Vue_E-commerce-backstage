@@ -18,8 +18,10 @@ import 'quill/dist/quill.bubble.css'
 import axios from 'axios'
 // 配置请求的根路径
 // axios.defaults.baseURL = 'https://www.liulongbin.top:8888/api/private/v1/'
-axios.defaults.baseURL = 'http://timemeetyou.com:8889/api/private/v1/'
-  // axios.defaults.baseURL = 'http://119.23.53.78:8888/api/private/v1/'
+// axios.defaults.baseURL = 'http://timemeetyou.com:8889/api/private/v1/'
+// axios.defaults.baseURL = 'http://119.23.53.78:8888/api/private/v1/'
+axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+
 Vue.prototype.$http = axios
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -33,7 +35,7 @@ axios.interceptors.request.use(
   function(error) {
     // Do something with request error
     return Promise.reject(error)
-      // console.log('wrong')
+    // console.log('wrong')
   }
 )
 
