@@ -12,7 +12,7 @@
       <el-row>
         <el-col :span="8">
           <el-input placeholder="请输入内容">
-            <el-button slot="append" icon="el-icon-search"></el-button>
+            <el-button round slot="append" icon="el-icon-search"></el-button>
           </el-input>
         </el-col>
       </el-row>
@@ -42,8 +42,8 @@
         </el-table-column>
         <el-table-column label="操作">
           <template>
-            <el-button size="mini" type="primary" icon="el-icon-edit" @click="showBox"></el-button>
-            <el-button size="mini" type="success" icon="el-icon-location" @click="showProgressBox"></el-button>
+            <el-button round size="mini" type="primary" icon="el-icon-edit" @click="showBox"></el-button>
+            <el-button round size="mini" type="success" icon="el-icon-location" @click="showProgressBox"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -64,8 +64,8 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="addressVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addressVisible = false">确 定</el-button>
+        <el-button round @click="addressVisible = false">取 消</el-button>
+        <el-button round type="primary" @click="addressVisible = false">确 定</el-button>
       </span>
     </el-dialog>
 

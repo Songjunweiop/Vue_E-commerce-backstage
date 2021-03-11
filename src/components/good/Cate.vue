@@ -10,7 +10,7 @@
     <!-- 卡片 -->
     <el-card>
       <el-row>
-        <el-button type="primary" @click="addCateVisible = true; getParentCateList()">添加角色</el-button>
+        <el-button type="primary"  @click="addCateVisible = true; getParentCateList()" round>添加商品</el-button>
       </el-row>
 
       <!-- 表格 -->
@@ -48,6 +48,7 @@
               type="primary"
               icon="el-icon-edit"
               @click="showEditDialog(scope.row.cat_id)"
+              round
             >编辑</el-button>
           </el-tooltip>
           <el-tooltip content="删除" placement="top" :enterable="false">
@@ -55,6 +56,7 @@
               size="mini"
               type="danger"
               icon="el-icon-delete"
+              round
               @click="removeCate(scope.row.cat_id)"
             >删除</el-button>
           </el-tooltip>
@@ -74,14 +76,14 @@
 
       <!-- 编辑商品 -->
       <el-dialog title="编辑分类名称" :visible.sync="editCateVisible" width="30%">
-        <el-form :model="editCateForm" ref="editCateRef" label-width="100px" class="demo-ruleForm">
+        <el-form :model="editCateForm" ref="e roundditCateRef" label-width="100px" class="demo-ruleForm">
           <el-form-item label="分类名称" prop="cat_name">
             <el-input v-model="editCateForm.cat_name"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="editCateVisible = false">取 消</el-button>
-          <el-button type="primary" @click="editCate">确 定</el-button>
+          <el-button @click="editCateVisible = false" round>取 消</el-button>
+          <el-button type="primary" @click="editCate" round>确 定</el-button>
         </span>
       </el-dialog>
 
@@ -111,8 +113,8 @@
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="addCateVisible = false">取 消</el-button>
-          <el-button type="primary" @click="addCate">确 定</el-button>
+          <el-button @click="addCateVisible = false" round>取 消</el-button>
+          <el-button type="primary" @click="addCate" round>确 定</el-button>
         </span>
       </el-dialog>
     </el-card>

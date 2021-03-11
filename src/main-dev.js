@@ -2,7 +2,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import './plugins/element.js'
+// import ElementUI from 'element-ui';
+// import 'element-ui/lib/theme-chalk/index.css';
 
+
+import '@fortawesome/fontawesome-free/js/all.js'
+import '@fortawesome/fontawesome-free/css/all.css'
 
 // 导入全局样式表
 import './assets/css/global.css'
@@ -55,6 +60,7 @@ Vue.filter('dateFormat', function(originVal) {
   const ss = (dt.getSeconds() + '').padStart(2, '0')
   return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
 })
+// Vue.use(ElementUI)
 
 new Vue({
   router,

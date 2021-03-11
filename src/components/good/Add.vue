@@ -81,14 +81,14 @@
               :headers="headerObj"
               :on-success="handleSuccess"
             >
-              <el-button size="small" type="primary">点击上传</el-button>
+              <el-button size="small" type="primary" round>点击上传</el-button>
             </el-upload>
           </el-tab-pane>
 
           <el-tab-pane label="商品内容" name="4">
             <quill-editor v-model="addForm.goods_introduce"></quill-editor>
             <!-- 添加商品的按钮 -->
-            <el-button type="primary" class="btnAdd" @click="add">添加商品</el-button>
+            <el-button type="primary" class="btnAdd" @click="add" round>添加商品</el-button>
           </el-tab-pane>
         </el-tabs>
       </el-form>

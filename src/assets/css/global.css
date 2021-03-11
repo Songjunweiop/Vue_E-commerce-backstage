@@ -30,3 +30,12 @@ body,
 .ql-editor {
   min-height: 300px;
 }
+
+.el-input__inner{
+  border-radius: 20px;
+
+}
+.el-input-group__append{
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
+}

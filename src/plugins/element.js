@@ -25,7 +25,10 @@ import {
   Steps,
   Checkbox,
   CheckboxGroup,
-  Upload
+  Upload,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
 
 
 
@@ -74,3 +77,6 @@ Vue.use(Steps)
 Vue.use(Checkbox)
 Vue.use(CheckboxGroup)
 Vue.use(Upload)
+Vue.use(Dropdown)
+Vue.use(DropdownMenu)
+Vue.use(DropdownItem)

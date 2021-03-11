@@ -78,6 +78,7 @@ export default {
           message: "欢迎回来~"
         });
         window.sessionStorage.setItem("token",res.data.token);
+        window.sessionStorage.setItem("username",res.data.username);
         this.$router.push("/home")
       });
     }

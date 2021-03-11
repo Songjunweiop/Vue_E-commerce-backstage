@@ -18,11 +18,11 @@
             @keyup.enter.native="getGoodsList"
             class="input-with-select"
           >
-            <el-button slot="append" icon="el-icon-search" @click="getGoodsList"></el-button>
+            <el-button slot="append" round icon="el-icon-search" @click="getGoodsList"></el-button>
           </el-input>
         </el-col>
         <el-col :span="6">
-          <el-button type="primary" @click="goAddpage">添加商品</el-button>
+          <el-button round type="primary" @click="goAddpage">添加商品</el-button>
         </el-col>
       </el-row>
 
@@ -44,6 +44,7 @@
                 type="primary"
                 icon="el-icon-edit"
                 circle
+                round
                 @click="showEditDialog(scope.row.goods_id)"
               ></el-button>
             </el-tooltip>
@@ -53,6 +54,7 @@
                 type="danger"
                 icon="el-icon-delete"
                 circle
+                round
                 @click="removeGood(scope.row.goods_id)"
               ></el-button>
             </el-tooltip>
@@ -96,8 +98,8 @@
         </el-form-item> -->
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="editUserChange">确 定</el-button>
+        <el-button round @click="editDialogVisible = false">取 消</el-button>
+        <el-button round type="primary" @click="editUserChange">确 定</el-button>
       </span>
     </el-dialog>
     </el-card>
@@ -160,13 +162,13 @@ export default {
     async editUserChange(){
       // console.log(this.editForm)
       // console.log(this.editForm.goods_id)
-      // const{data:res} =await this.$http.put('goods/'+this.editForm.goods_id,{
-      //     goods_name:this.editForm.goods_name,
-      //     goods_price:this.editForm.goods_price,
-      //     goods_number:this.editForm.goods_number,
-      //     goods_weight:this.editForm.goods_weight
-      // })
-      // if(res.meta.status!==201) return this.$message.error('更新失败')
+      const{data:res} =await this.$http.put('goods/'+this.editForm.goods_id,{
+          goods_name:this.editForm.goods_name,
+          goods_price:this.editForm.goods_price,
+          goods_number:this.editForm.goods_number,
+          goods_weight:this.editForm.goods_weight
+      })
+      if(res.meta.status!==200) return this.$message.error('更新失败')
 
       this.editDialogVisible=false
       this.getGoodsList()
