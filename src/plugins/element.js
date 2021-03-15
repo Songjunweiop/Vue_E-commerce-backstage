@@ -29,6 +29,7 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
+  Image
 
 
 
@@ -80,3 +81,4 @@ Vue.use(Upload)
 Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
+Vue.use(Image)

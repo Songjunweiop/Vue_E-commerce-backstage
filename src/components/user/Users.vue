@@ -68,6 +68,7 @@
                 type="danger"
                 icon="el-icon-delete"
                 circle
+                :disabled="scope.row.id === 500 ? true : false"
                 @click="removeUser(scope.row.id)"
               ></el-button>
             </el-tooltip>
@@ -78,6 +79,7 @@
                 type="warning"
                 icon="el-icon-setting"
                 circle
+                :disabled="scope.row.id === 500 ? true : false"
                 @click="showsetRole(scope.row)"
               ></el-button>
             </el-tooltip>
@@ -209,7 +211,6 @@ export default {
       },
       userlist: [],
       total: 0,
-
       adddialogVisible: false,
       addForm: {
         username: '',

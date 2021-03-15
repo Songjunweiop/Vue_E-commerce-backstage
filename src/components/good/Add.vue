@@ -102,7 +102,15 @@ export default {
       activeIndex:'0',
       addForm:{
         goods_cat:[],
-        attrs:[]
+        attrs:[],
+        goods_name: '',
+        goods_price: 0,
+        goods_weight: 0,
+        goods_number: 0,
+        // 图片的数组
+        pics: [],
+        // 商品的详情描述
+        goods_introduce: ''
       },
       addFormRules:{
         goods_name:[{required: true, message:'请输入商品名称', trigger: 'blur'}],
@@ -115,7 +123,7 @@ export default {
       manyTableData:[],
       onlyTableData:[],
       // 上传图片的URL地址
-      uploadURL: 'http://timemeetyou.com:8889/api/private/v1/',
+      uploadURL: 'http://127.0.0.1:8888/api/private/v1/upload',
       // 图片上传组件的headers请求头对象
       headerObj: {
         Authorization: window.sessionStorage.getItem('token')
@@ -129,7 +137,7 @@ export default {
       const {data:res} = await this.$http.get('categories')
       if(res.meta.status!==200) return this.$message.error('获取失败')
       this.catelist=res.data
-      console.log(this.catelist)
+      // console.log(this.catelist)
     },
     handleChange(){
       console.log(this.addForm)
@@ -180,7 +188,8 @@ export default {
       console.log(this.addForm)
     },
     handleSuccess(response) {
-      console.log(response)
+      console.log('response',response)
+      console.log('addForm',this.addForm)
       // 1. 拼接得到一个图片信息对象
       const picInfo = { pic: response.data.tmp_path }
       // 2. 将图片信息对象，push 到pics数组中
@@ -228,6 +237,7 @@ export default {
   },
   created(){
     this.getCateList()
+    console.log(this.uploadURL)
   },
   computed:{
     cateId(){

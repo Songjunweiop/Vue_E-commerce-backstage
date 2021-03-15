@@ -298,7 +298,8 @@ export default {
           params: { sel: this.activeName }
         }
       );
-      if (res.meta.status !== 200) return this.$message.error('获取失败');
+      if (res.meta.status !== 200)
+        return this.$message.error('请选择一个商品分类');
       // console.log(res.data)
       res.data.forEach(item => {
         item.attr_vals = item.attr_vals ? item.attr_vals.split(',') : [];

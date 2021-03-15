@@ -52,7 +52,7 @@
       <el-aside :width="isCollapse ? '56px' : '210px'">
         <!-- <div class="tog_button" @click="toggleCollapse">| | |</div> -->
         <el-menu
-          unique-opened
+          
           background-color="#222d31"
           text-color="#bdc9d0"
           active-text-color="#409EFF"
