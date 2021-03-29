@@ -37,7 +37,8 @@ const Order = () =>
   import ( /* webpackChunkName:"order" */ '@/components/order/Order.vue')
 const Report = () =>
   import ( /* webpackChunkName:"report" */ '@/components/reports/Report.vue')
-
+const Vips = () =>
+  import ('@/components/vip/Vips.vue')
 
 
 Vue.use(VueRouter)
@@ -63,7 +64,8 @@ const router = new VueRouter({
         { path: '/params', component: Params },
         { path: '/goods/add', component: Add },
         { path: '/orders', component: Order },
-        { path: '/reports', component: Report }
+        { path: '/reports', component: Report },
+        { path: '/vips', component: Vips }
       ]
     },
 
