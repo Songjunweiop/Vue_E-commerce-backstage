@@ -285,7 +285,7 @@ export default {
     async getCateList() {
       const { data: res } = await this.$http.get('categories');
       if (res.meta.status !== 200)
-        return this.$message.error('获取商品分类失败');
+        return this.$message.error(res.meta.msg);
       this.catelist = res.data;
       console.log(this.catelist);
     },
@@ -336,7 +336,7 @@ export default {
         }
       );
       if (res.meta.status !== 201)
-        return this.$message.error('添加' + this.titleText + '失败');
+        return this.$message.error('添加' + this.titleText + '失败' + res.meta.msg);
       this.$message.success('添加' + this.titleText + '成功');
       this.addVisible = false;
       this.getParamsData();
@@ -349,7 +349,7 @@ export default {
           params: { attr_sel: this.activeName }
         }
       );
-      if (res.meta.status !== 200) return this.$message.error('获取失败');
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
       this.$message.success('获取成功');
       this.editForm = res.data;
       this.editVisible = true;
@@ -365,7 +365,7 @@ export default {
           attr_name: this.editForm.attr_name
         }
       );
-      if (res.meta.status !== 200) return this.$message.error('修改失败');
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
       this.$message.success('修改参数成功');
       this.editVisible = false;
       this.getParamsData();
@@ -388,7 +388,7 @@ export default {
       const { data: res } = await this.$http.delete(
         `categories/${this.cateId}/attributes/${id}`
       );
-      if (res.meta.status !== 200) return this.$message.error('删除失败');
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
       this.$message.success('删除成功');
       this.getParamsData();
     },
@@ -401,7 +401,7 @@ export default {
           attr_vals: row.attr_vals.join(',')
         }
       );
-      if (res.meta.status !== 200) return this.$message.error('修改参数项失败');
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
       this.$message.success('修改参数项成功');
     },
     handleInputConfirm(row) {

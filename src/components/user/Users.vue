@@ -286,7 +286,7 @@ export default {
       });
       console.log(res);
       if (res.meta.status !== 200) {
-        return this.$message.error('获取用户列表失败');
+        return this.$message.error(res.meta.msg);
       }
       console.log(res);
       this.userlist = res.data.users;
@@ -312,7 +312,7 @@ export default {
       );
       if (res.meta.status != 200) {
         userinfo.mg_state = !userinfo.mg_state;
-        return this.$message.error('更新用户状态失败');
+        return this.$message.error(res.meta.msg);
       }
       this.$message.success('更新用户状态成功');
     },
@@ -328,7 +328,7 @@ export default {
         //正确则可以发起添加请求
         const { data: res } = await this.$http.post('users', this.addForm);
         if (res.meta.status !== 201) {
-          this.$message.error('添加用户失败');
+          this.$message.error(res.meta.msg);
         }
         this.$message.success('添加用户成功');
         this.adddialogVisible = false;
@@ -339,7 +339,7 @@ export default {
       console.log(id);
       const { data: res } = await this.$http.get('users/' + id);
       if (res.meta.status !== 200) {
-        return this.$message.error('查询用户失败');
+        return this.$message.error(res.meta.msg);
       }
       this.editForm = res.data;
       this.editDialogVisible = true;
@@ -366,7 +366,7 @@ export default {
         console.log(res);
         console.log(this.editForm.id);
         if (res.meta.status !== 200) {
-          return this.$message.error('更新用户信息失败！');
+          return this.$message.error(res.meta.msg);
         }
         //成功后关闭对话框，重新加载列表，提示用户成功
         this.editDialogVisible = false;
@@ -396,7 +396,7 @@ export default {
       const { data: res } = await this.$http.delete('users/' + id);
       console.log(res);
       if (res.meta.status !== 200) {
-        return this.$message.error('删除用户失败');
+        return this.$message.error(res.meta.msg);
       }
 
       this.$message.success('删除用户成功！');
@@ -407,7 +407,7 @@ export default {
       this.userInfo = userInfo;
 
       const { data: res } = await this.$http.get('roles');
-      if (res.meta.status !== 200) return this.$message.error('获取失败');
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
       this.rolesList = res.data;
 
       this.setRoleDialogVisible = true;
@@ -423,7 +423,7 @@ export default {
           rid: this.selectedRoleId
         }
       );
-      if (res.meta.status !== 200) return this.$message.error('更新角色失败');
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
       this.$message.success('更新用户成功');
       this.getUserList();
       this.setRoleDialogVisible = false;

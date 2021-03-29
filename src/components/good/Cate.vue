@@ -201,7 +201,7 @@ export default {
     async showEditDialog(id){
       console.log(id)
       const {data:res} = await this.$http.get('categories/'+id)
-      if(res.meta.status!==200) return this.$message.error('获取失败')
+      if(res.meta.status!==200) return this.$message.error(res.meta.msg)
       this.editCateForm=res.data
       console.log(this.editCateForm)
       this.editCateVisible=true
@@ -211,7 +211,7 @@ export default {
       const {data:res} = await this.$http.put('categories/'+this.editCateForm.cat_id,{
         cat_name:this.editCateForm.cat_name
       })
-      if (res.meta.status!==200) return this.$message.error('编辑失败')
+      if (res.meta.status!==200) return this.$message.error(res.meta.msg)
       this.$message.success('编辑成功')
       this.getCateList()
       this.editCateVisible=false
@@ -229,7 +229,7 @@ export default {
         return this.$message.info("已取消删除")
       }
       const {data:res} = await this.$http.delete('categories/'+id)
-      if(res.meta.status!==200) return this.$message.error('删除失败')
+      if(res.meta.status!==200) return this.$message.error(res.meta.msg)
       this.$message.success('删除成功！')
       this.getCateList()
     },
@@ -249,7 +249,7 @@ export default {
       console.log(this.addCateForm)
       this.getCateList()
       const {data:res} =await this.$http.post('categories',this.addCateForm)
-      if(res.meta.status!==201) return this.$message.error('添加失败')
+      if(res.meta.status!==201) return this.$message.error(res.meta.msg)
       this.$message.success('添加成功')
       this.getCateList()
       this.addCateVisible=false

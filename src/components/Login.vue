@@ -75,10 +75,11 @@ export default {
           });
         this.$notify.success({
           title: "登录成功",
-          message: "欢迎回来~"
+          message: `欢迎回来~ 亲爱的${res.data.username}`
         });
         window.sessionStorage.setItem("token",res.data.token);
         window.sessionStorage.setItem("username",res.data.username);
+        window.sessionStorage.setItem("roleId",res.data.rid);
         this.$router.push("/home")
       });
     }

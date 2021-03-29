@@ -4,7 +4,7 @@
 ## Project setup
 
 ```
-npm run serve
+npm start
 ```
 ### 登录/退出功能：
     店铺管理员可通过登录页面登录admin账户，进入电商后台管理系统。进入系统后，可手动退出当前账号

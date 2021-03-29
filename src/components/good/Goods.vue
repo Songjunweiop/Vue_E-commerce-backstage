@@ -205,7 +205,7 @@ export default {
     async getCateList() {
       const { data: res } = await this.$http.get('categories');
       if (res.meta.status !== 200)
-        return this.$message.error('获取商品分类失败');
+        return this.$message.error(res.meta.msg);
       this.catelist = res.data;
       console.log(this.catelist);
     },
@@ -218,7 +218,7 @@ export default {
         }
       });
       if (res.meta.status !== 200)
-        return this.$message.error('获取商品列表失败');
+        return this.$message.error(res.meta.msg);
       this.$message.success('获取商品列表成功');
       // console.log(res)
       this.goodslist = res.data.goods;
@@ -240,7 +240,7 @@ export default {
       this.urlList = [];
       const { data: res } = await this.$http.get('goods/' + id);
       // console.log(id)
-      if (res.meta.status !== 200) return this.$message.error('查询商品失败');
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
       this.editForm = res.data;
 
       this.selectedCateKeys = JSON.parse('[' + res.data.goods_cat + ']');
@@ -278,7 +278,7 @@ export default {
           goods_weight: this.editForm.goods_weight
         }
       );
-      if (res.meta.status !== 200) return this.$message.error('更新失败');
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
 
       this.editDialogVisible = false;
       this.getGoodsList();
@@ -301,7 +301,7 @@ export default {
         return this.$message.info('已取消删除');
       }
       const { data: res } = await this.$http.delete('goods/' + id);
-      if (res.meta.status !== 200) return this.$message.error('删除失败');
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
       this.$message.success('删除商品成功！');
       this.getGoodsList();
     },

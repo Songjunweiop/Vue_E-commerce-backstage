@@ -256,7 +256,7 @@ export default {
     async getRolesList() {
       const { data: res } = await this.$http.get('roles');
       if (res.meta.status !== 200)
-        return this.$message.error('获取角色列表失败');
+        return this.$message.error(res.meta.msg);
       this.rolesList = res.data;
       console.log(this.rolesList);
     },
@@ -267,7 +267,7 @@ export default {
         const { data: res } = await this.$http.post('roles', this.addRolesForm);
         console.log(res);
         if (res.meta.status !== 201) {
-          return this.$message.error('添加角色失败');
+          return this.$message.error(res.meta.msg);
         }
         this.$message.success('添加角色成功！');
         this.addRolesVisible = false;
@@ -295,7 +295,7 @@ export default {
         return this.$message.info('已取消删除');
       }
       const { data: res } = await this.$http.delete('roles/' + id);
-      if (res.meta.status !== 200) return this.$message.error('删除角色失败');
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
       this.$message.success('删除角色成功！');
       this.getRolesList();
     },
@@ -303,7 +303,7 @@ export default {
     async showEditDialog(id) {
       const { data: res } = await this.$http.get('roles/' + id);
       if (res.meta.status !== 200) {
-        return this.$message.error('查询用户失败');
+        return this.$message.error(res.meta.msg);
       }
       this.$message.success('获取成功');
       console.log(id);
@@ -327,7 +327,7 @@ export default {
         );
         console.log(res);
         if (res.meta.status !== 200) {
-          return this.$message.error('更新用户信息失败！');
+          return this.$message.error(res.meta.msg);
         }
         //成功后关闭对话框，重新加载列表，提示用户成功
         this.editRolesVisible = false;
@@ -355,7 +355,7 @@ export default {
       const { data: res } = await this.$http.delete(
         `roles/${role.id}/rights/${rightId}`
       );
-      if (res.meta.status !== 200) return this.$message.error('删除权限失败');
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
       this.$message.success('删除权限成功');
 
       // this.getRolesList()  // 为了避免这个页面的完整性刷新
@@ -367,7 +367,7 @@ export default {
       this.roleId = role.id;
       const { data: res } = await this.$http.get('rights/tree');
       if (res.meta.status !== 200)
-        return this.$message.error('获取权限数据失败');
+        return this.$message.error(res.meta.msg);
       console.log(res);
       this.$message.success('获取权限数据成功!');
       this.rightsList = res.data;
@@ -400,7 +400,7 @@ export default {
         { rids: idStr }
       );
 
-      if (res.meta.status !== 200) return this.$message.error('分配权限失败');
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
       this.$message.success('分配权限成功！');
       this.getRolesList();
       this.setRightDialogVisible = false;

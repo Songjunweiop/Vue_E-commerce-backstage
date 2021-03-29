@@ -135,7 +135,7 @@ export default {
   methods:{
     async getCateList(){
       const {data:res} = await this.$http.get('categories')
-      if(res.meta.status!==200) return this.$message.error('获取失败')
+      if(res.meta.status!==200) return this.$message.error(res.meta.msg)
       this.catelist=res.data
       // console.log(this.catelist)
     },
@@ -157,7 +157,7 @@ export default {
           }
         })
         console.log(res)
-        if(res.meta.status!==200) return this.$message.error('获取失败')
+        if(res.meta.status!==200) return this.$message.error(res.meta.msg)
         res.data.forEach(item=>{
           item.attr_vals=item.attr_vals.length === 0 ? [] : item.attr_vals.split(',')
         })
@@ -227,7 +227,7 @@ export default {
         const { data: res } = await this.$http.post('goods', form)
 
         if (res.meta.status !== 201) {
-          return this.$message.error('添加商品失败！')
+          return this.$message.error(res.meta.msg)
         }
 
         this.$message.success('添加商品成功！')
