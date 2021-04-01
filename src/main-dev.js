@@ -6,6 +6,7 @@ import './plugins/element.js'
 // import 'element-ui/lib/theme-chalk/index.css';
 
 
+//导入fas图标
 import '@fortawesome/fontawesome-free/js/all.js'
 import '@fortawesome/fontawesome-free/css/all.css'
 

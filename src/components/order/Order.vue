@@ -22,6 +22,7 @@
         <el-table-column type="index"></el-table-column>
         <el-table-column label="订单编号" prop="order_number"></el-table-column>
         <el-table-column label="订单价格" prop="order_price"></el-table-column>
+        <el-table-column label="发票抬头" prop="order_fapiao_title"></el-table-column>
         <el-table-column label="是否付款" prop="pay_status">
           <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.pay_status === '1'">已付款</el-tag>

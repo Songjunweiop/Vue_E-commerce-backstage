@@ -3,12 +3,12 @@
     <!-- 面包屑导航 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-      <el-breadcrumb-item>用户列表</el-breadcrumb-item>
+      <el-breadcrumb-item>会员管理</el-breadcrumb-item>
+      <el-breadcrumb-item>会员列表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card class="box-card">
       <!-- 搜索区域 -->
-      <el-row :gutter="20">
+      <!-- <el-row :gutter="20">
         <el-col :span="8">
           <el-input
             class="button"
@@ -29,24 +29,27 @@
         </el-col>
         <el-col :span="4">
           <el-button type="primary" @click="adddialogVisible = true" round
-            >添加用户</el-button
+            >添加会员</el-button
           >
         </el-col>
-      </el-row>
+      </el-row> -->
 
-      <!-- 用户列表区域 -->
+      <!-- 会员列表区域 -->
       <el-table stripe :data="userlist">
         <el-table-column type="index"></el-table-column>
         <el-table-column label="姓名" prop="username"></el-table-column>
-        <el-table-column label="邮箱" prop="email"></el-table-column>
+        <el-table-column label="性别" prop="sex"></el-table-column>
+        <el-table-column
+          label="邮箱"
+          prop="email"
+          width="200px"
+        ></el-table-column>
         <el-table-column label="电话" prop="mobile"></el-table-column>
-        <el-table-column label="角色" prop="role_name"></el-table-column>
-        <el-table-column label="状态">
+        <el-table-column label="QQ" prop="qq"></el-table-column>
+        <el-table-column label="学历" prop="xueli"></el-table-column>
+        <el-table-column label="注册时间" prop="create_time" width="200px">
           <template slot-scope="scope">
-            <el-switch
-              v-model="scope.row.mg_state"
-              @change="userStateChanged(scope.row)"
-            ></el-switch>
+            {{ scope.row.create_time | dateFormat }}
           </template>
         </el-table-column>
         <el-table-column label="操作">
@@ -61,7 +64,7 @@
                 @click="showEditDialog(scope.row.id)"
               ></el-button>
             </el-tooltip>
-            <el-tooltip content="删除用户" placement="top" :enterable="false">
+            <el-tooltip content="删除会员" placement="top" :enterable="false">
               <el-button
                 round
                 size="mini"
@@ -70,17 +73,6 @@
                 circle
                 :disabled="scope.row.id === 500 ? true : false"
                 @click="removeUser(scope.row.id)"
-              ></el-button>
-            </el-tooltip>
-            <el-tooltip content="角色分配" placement="top" :enterable="false">
-              <el-button
-                round
-                size="mini"
-                type="warning"
-                icon="el-icon-setting"
-                circle
-                :disabled="scope.row.id === 500 ? true : false"
-                @click="showsetRole(scope.row)"
               ></el-button>
             </el-tooltip>
           </template>
@@ -99,9 +91,9 @@
       ></el-pagination>
     </el-card>
 
-    <!-- 添加用户的对话框 -->
+    <!-- 添加会员的对话框 -->
     <el-dialog
-      title="添加用户"
+      title="添加会员"
       :visible.sync="adddialogVisible"
       width="30%"
       @close="addDialogClosed"
@@ -113,7 +105,7 @@
         label-width="100px"
         class="demo-ruleForm"
       >
-        <el-form-item label="用户名" prop="username">
+        <el-form-item label="会员名" prop="username">
           <el-input v-model="addForm.username"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
@@ -132,8 +124,8 @@
       </span>
     </el-dialog>
 
-    <!-- 修改用户的对话框 -->
-    <el-dialog title="修改用户" :visible.sync="editDialogVisible" width="30%">
+    <!-- 修改会员的对话框 -->
+    <el-dialog title="修改会员" :visible.sync="editDialogVisible" width="30%">
       <el-form
         :model="editForm"
         :rules="editFormRules"
@@ -141,7 +133,7 @@
         label-width="100px"
         class="demo-ruleForm"
       >
-        <el-form-item label="用户名">
+        <el-form-item label="会员名">
           <el-input v-model="editForm.username" disabled></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
@@ -149,6 +141,9 @@
         </el-form-item>
         <el-form-item label="手机号" prop="mobile">
           <el-input v-model="editForm.mobile"></el-input>
+        </el-form-item>
+        <el-form-item label="qq" prop="qq">
+          <el-input v-model="editForm.qq"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -158,49 +153,12 @@
         >
       </span>
     </el-dialog>
-
-    <!-- 分配角色的对话框 -->
-    <el-dialog
-      title="分配角色"
-      :visible.sync="setRoleDialogVisible"
-      width="30%"
-      @close="setRoleDialogClosed"
-    >
-      <div>
-        <p>当前用户：{{ userInfo.username }}</p>
-        <p>当前角色：{{ userInfo.role_name }}</p>
-        <p>
-          分配新角色：
-          <el-select v-model="selectedRoleId" placeholder="请选择角色">
-            <el-option
-              v-for="item in rolesList"
-              :key="item.id"
-              :label="item.roleName"
-              :value="item.id"
-            ></el-option>
-          </el-select>
-        </p>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button round @click="setRoleDialogVisible = false">取 消</el-button>
-        <el-button round type="primary" @click="saveRoleInfo">确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 export default {
   data() {
-    //验证电话的规则
-    var checkMobile = (rule, value, cb) => {
-      const regMobile = /^1\d{10}$/;
-      if (regMobile.test(value)) {
-        return cb();
-      }
-      cb(new Error('请输入合法的手机号'));
-    };
-
     return {
       queryInfo: {
         query: '',
@@ -216,7 +174,7 @@ export default {
         username: '',
         password: '',
         email: '',
-        mobile: ''
+        mobile: '',
       },
       addFormRules: {
         username: [
@@ -236,8 +194,8 @@ export default {
           }
         ],
         mobile: [
-          { required: true, message: '请输入电话号码', trigger: 'blur' },
-          { validator: checkMobile, trigger: 'blur' }
+          { required: true, message: '请输入电话号码', trigger: 'blur' }
+          // { validator: checkMobile, trigger: 'blur' }
         ]
       },
 
@@ -245,7 +203,8 @@ export default {
       editForm: {
         username: '',
         email: '',
-        mobile: ''
+        mobile: '',
+        qq: ''
       },
       editFormRules: {
         email: [
@@ -257,8 +216,8 @@ export default {
           }
         ],
         mobile: [
-          { required: true, message: '请输入电话号码', trigger: 'blur' },
-          { validator: checkMobile, trigger: 'blur' }
+          { required: true, message: '请输入电话号码', trigger: 'blur' }
+          // { validator: checkMobile, trigger: 'blur' }
         ]
       },
 
@@ -276,7 +235,7 @@ export default {
   methods: {
     async getUserList() {
       console.log('aaaaaaaaaaaaaaaaaaaaaaa');
-      const { data: res } = await this.$http.get('users', {
+      const { data: res } = await this.$http.get('vips', {
         // params:this.queryInfo
         params: {
           query: this.queryInfo.query,
@@ -314,9 +273,9 @@ export default {
         userinfo.mg_state = !userinfo.mg_state;
         return this.$message.error(res.meta.msg);
       }
-      this.$message.success('更新用户状态成功');
+      this.$message.success('更新会员状态成功');
     },
-    //监听添加用户对话框关闭事件
+    //监听添加会员对话框关闭事件
     addDialogClosed() {
       this.$refs.addFormRef.resetFields(); //重置表单为空白
     },
@@ -330,25 +289,26 @@ export default {
         if (res.meta.status !== 201) {
           this.$message.error(res.meta.msg);
         }
-        this.$message.success('添加用户成功');
+        this.$message.success('添加会员成功');
         this.adddialogVisible = false;
         this.getUserList();
       });
     },
     async showEditDialog(id) {
       console.log(id);
-      const { data: res } = await this.$http.get('users/' + id);
+      const { data: res } = await this.$http.get('vips/' + id);
       if (res.meta.status !== 200) {
         return this.$message.error(res.meta.msg);
       }
       this.editForm = res.data;
+      console.log(this.editForm)
       this.editDialogVisible = true;
     },
-    //监听修改用户对话框关闭的事件
+    //监听修改会员对话框关闭的事件
     editDialogClosed() {
       this.$refs.editFormRef.resetFields(); //重置
     },
-    //修改用户信息提交
+    //修改会员信息提交
     editUserChange() {
       this.$refs.editFormRef.validate(async valid => {
         console.log(valid);
@@ -357,29 +317,28 @@ export default {
         //正确则发起请求
         console.log(this.editForm);
         const { data: res } = await this.$http.put(
-          'users/' + this.editForm.id,
+          'vips/' + this.editForm.id,
           {
             email: this.editForm.email,
-            mobile: this.editForm.mobile
+            mobile: this.editForm.mobile,
+            qq: this.editForm.qq
           }
         );
-        console.log(res);
-        console.log(this.editForm.id);
         if (res.meta.status !== 200) {
           return this.$message.error(res.meta.msg);
         }
-        //成功后关闭对话框，重新加载列表，提示用户成功
+        //成功后关闭对话框，重新加载列表，提示会员成功
         this.editDialogVisible = false;
         this.getUserList();
-        this.$message.success('更新用户成功！');
+        this.$message.success('更新会员成功！');
       });
     },
-    //删除用户
+    //删除会员
     async removeUser(id) {
       console.log(id);
       //弹框询问
       const confirmResult = await this.$confirm(
-        '此操作将永久删除该用户, 是否继续?',
+        '此操作将永久删除该会员, 是否继续?',
         '提示',
         {
           confirmButtonText: '确定',
@@ -393,52 +352,21 @@ export default {
         return this.$message.info('已取消删除');
       }
 
-      const { data: res } = await this.$http.delete('users/' + id);
+      const { data: res } = await this.$http.delete('vips/' + id);
       console.log(res);
       if (res.meta.status !== 200) {
         return this.$message.error(res.meta.msg);
       }
 
-      this.$message.success('删除用户成功！');
+      this.$message.success('删除会员成功！');
       this.getUserList();
-    },
-    // 角色分配
-    async showsetRole(userInfo) {
-      this.userInfo = userInfo;
-
-      const { data: res } = await this.$http.get('roles');
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.rolesList = res.data;
-
-      this.setRoleDialogVisible = true;
-    },
-    // 点击按钮，分配角色
-    async saveRoleInfo() {
-      if (!this.selectedRoleId)
-        return this.$message.error('请选择要分配的角色');
-
-      const { data: res } = await this.$http.put(
-        `users/${this.userInfo.id}/role`,
-        {
-          rid: this.selectedRoleId
-        }
-      );
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.$message.success('更新用户成功');
-      this.getUserList();
-      this.setRoleDialogVisible = false;
-    },
-    // 分配角色列表关闭
-    setRoleDialogClosed() {
-      this.selectedRoleId = '';
-      this.userInfo = {};
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
-  .button{
-    border-radius: 40px;
-  }
+.button {
+  border-radius: 40px;
+}
 </style>
