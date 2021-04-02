@@ -16,7 +16,7 @@
         </el-col>
       </el-row>
 
-      <el-table :data="rolesList" style="width: 100%" stripe>
+      <el-table :data="rolesList" style="width: 100%" >
         <!-- 展开列 -->
         <el-table-column type="expand">
           <template slot-scope="scope">

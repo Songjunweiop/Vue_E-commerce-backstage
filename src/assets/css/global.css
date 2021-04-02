@@ -39,3 +39,7 @@ body,
   border-bottom-right-radius: 20px;
   border-top-right-radius: 20px;
 }
+.el-form-item__label {
+  width: 90px;
+  color: #99a9bf !important;
+}

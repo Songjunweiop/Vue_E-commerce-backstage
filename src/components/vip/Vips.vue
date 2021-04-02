@@ -35,7 +35,7 @@
       </el-row> -->
 
       <!-- 会员列表区域 -->
-      <el-table stripe :data="userlist">
+      <el-table :data="userlist">
         <el-table-column type="index"></el-table-column>
         <el-table-column label="姓名" prop="username"></el-table-column>
         <el-table-column label="性别" prop="sex"></el-table-column>
