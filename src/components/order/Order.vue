@@ -9,13 +9,13 @@
 
     <!-- 卡片视图区域 -->
     <el-card>
-      <el-row>
+      <!-- <el-row>
         <el-col :span="8">
           <el-input placeholder="请输入内容">
             <el-button round slot="append" icon="el-icon-search"></el-button>
           </el-input>
         </el-col>
-      </el-row>
+      </el-row> -->
 
       <!-- 订单列表数据 -->
       <el-table :data="orderlist" >

@@ -10,7 +10,7 @@
     <!-- 卡片 -->
     <el-card>
       <el-row>
-        <el-button type="primary"  @click="addCateVisible = true; getParentCateList()" round>添加商品</el-button>
+        <el-button type="primary"  @click="addCateVisible = true; getParentCateList()" round>添加商品分类</el-button>
       </el-row>
 
       <!-- 表格 -->
@@ -24,14 +24,14 @@
         style="margin-top:15px;"
       >
         <!-- 是否有效 -->
-        <template slot="isok" slot-scope="scope">
+        <!-- <template slot="isok" slot-scope="scope">
           <i
             style="color:lightgreen;"
             class="el-icon-success"
             v-if="scope.row.cat_deleted === false"
           ></i>
           <i style="color:red;" class="el-icon-error" v-else></i>
-        </template>
+        </template> -->
 
         <!-- 级别 -->
         <template slot="order" slot-scope="scope">
@@ -139,11 +139,11 @@ export default {
           label:'分类名称',
           prop:'cat_name'
         },
-        {//这是模板列
-          label:'是否有效',
-          type:'template',
-          template:'isok'
-        },
+        // {//这是模板列
+        //   label:'是否有效',
+        //   type:'template',
+        //   template:'isok'
+        // },
         {//这是模板列
           label:'排序',
           type:'template',
