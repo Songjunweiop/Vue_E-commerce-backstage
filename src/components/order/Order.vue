@@ -18,50 +18,48 @@
       </el-row> -->
 
       <!-- 订单列表数据 -->
-      <el-table :data="orderlist" >
+      <el-table :data="orderlist">
         <el-table-column type="expand">
-        <template slot-scope="props">
-          <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="订单ID">
-              <span>{{ props.row.order_id }}</span>
-            </el-form-item>
-            <el-form-item label="下单时间" prop="create_time">
-              <span>
+          <template slot-scope="props">
+            <el-form label-position="left" inline class="demo-table-expand">
+              <el-form-item label="订单ID">
+                <span>{{ props.row.order_id }}</span>
+              </el-form-item>
+              <el-form-item label="下单时间" prop="create_time">
+                <span>
                   {{ props.row.create_time | dateFormat }}
-              </span>
-            </el-form-item>
+                </span>
+              </el-form-item>
 
-            <el-form-item label="商品名称">
-              <span>{{ props.row.order_fapiao_content }}</span>
-            </el-form-item>
-            <el-form-item label="商品数量">
-              <span>{{ props.row.trade_no }}</span>
-            </el-form-item>
-            <el-form-item label="是否发货">
-              <span>{{ props.row.is_send }}</span>
-            </el-form-item>
-            <el-form-item label="总金额">
-              <span>{{ props.row.order_price }} 元</span>
-            </el-form-item>
-            <el-form-item label="支付方式">
-              <span
-                >
+              <el-form-item label="商品名称">
+                <span>{{ props.row.order_fapiao_content }}</span>
+              </el-form-item>
+              <el-form-item label="商品数量">
+                <span>{{ props.row.trade_no }}</span>
+              </el-form-item>
+              <el-form-item label="是否发货">
+                <span>{{ props.row.is_send }}</span>
+              </el-form-item>
+              <el-form-item label="总金额">
+                <span>{{ props.row.order_price }} 元</span>
+              </el-form-item>
+              <el-form-item label="支付方式">
+                <span>
                   <div v-if="props.row.order_pay === '0'">未支付</div>
                   <div v-if="props.row.order_pay === '1'">支付宝</div>
                   <div v-if="props.row.order_pay === '2'">微信</div>
                   <div v-if="props.row.order_pay === '3'">银行卡</div>
-                </span
-              >
-            </el-form-item>
-            <el-form-item label="发票抬头">
-              <span>{{ props.row.order_fapiao_title }}</span>
-            </el-form-item>
-            <el-form-item label="配送地址">
-              <span>{{ props.row.consignee_addr }}</span>
-            </el-form-item>
-          </el-form>
-        </template>
-      </el-table-column>
+                </span>
+              </el-form-item>
+              <el-form-item label="发票抬头">
+                <span>{{ props.row.order_fapiao_title }}</span>
+              </el-form-item>
+              <el-form-item label="配送地址">
+                <span>{{ props.row.consignee_addr }}</span>
+              </el-form-item>
+            </el-form>
+          </template>
+        </el-table-column>
         <el-table-column type="index"></el-table-column>
         <el-table-column label="订单编号" prop="order_number"></el-table-column>
         <el-table-column label="订单价格" prop="order_price"></el-table-column>
@@ -89,24 +87,17 @@
             {{ scope.row.create_time | dateFormat }}
           </template>
         </el-table-column>
-        <!-- <el-table-column label="操作">
-          <template>
-            <el-button
-              round
-              size="mini"
-              type="primary"
-              icon="el-icon-edit"
-              @click="showBox"
-            ></el-button>
-            <el-button
-              round
-              size="mini"
-              type="success"
-              icon="el-icon-location"
-              @click="showProgressBox"
-            ></el-button>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-card
+              shadow="hover"
+              class="box-card handle"
+              @click.native="deleteById(scope.row.order_id)"
+            >
+              删除
+            </el-card>
           </template>
-        </el-table-column> -->
+        </el-table-column>
       </el-table>
 
       <!-- 分页区域 -->
@@ -215,7 +206,7 @@ export default {
 
       console.log(res);
       this.total = res.data.total;
-      this.orderlist = res.data.goods;
+      this.orderlist = res.data.order;
     },
     handleSizeChange(newSize) {
       this.queryInfo.pagesize = newSize;
@@ -232,17 +223,25 @@ export default {
     addressDialogClosed() {
       this.$refs.addressFormRef.resetFields();
     },
-    async showProgressBox() {
-      const { data: res } = await this.$http.get('/kuaidi/804909574412544580');
-
-      if (res.meta.status !== 200) {
-        return this.$message.error('获取物流进度失败！');
+    async deleteById(id) {
+      console.log(id);
+      const confirmResult = await this.$confirm(
+        '您确定要删除该订单吗？',
+        `${this.master}:`,
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).catch(err => err);
+      console.log(confirmResult);
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('已取消删除');
       }
-
-      this.progressInfo = res.data;
-
-      this.progressVisible = true;
-      console.log(this.progressInfo);
+      const { data: res } = await this.$http.delete('orders/' + id);
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
+      this.$message.success('删除订单成功！');
+      this.getOrderList();
     }
   }
 };
@@ -266,5 +265,15 @@ export default {
   margin-right: 0;
   margin-bottom: 0;
   width: 50%;
+}
+.handle {
+  cursor: pointer;
+  float: left;
+  width: 100px;
+  height: 63px;
+  text-align: center;
+  margin-right: 20px;
+  // line-height: 50px;
+  padding: 0 !important;
 }
 </style>
