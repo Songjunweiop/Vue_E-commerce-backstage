@@ -8,8 +8,9 @@
     </el-breadcrumb>
 
     <el-card style="min-height: 600px">
-      <div class="float" id="main2" style="width: 880px;height:400px;"></div>
-      <div class="float" id="main1" style="width: 400px;height:400px;"></div>
+      <div class="float" id="main2" style="width: 880px;height:400px; padding-top:0px"></div>
+      <div class="float" id="main1" style="width: 300px;height:300px;"></div>
+      <div class="float" id="main3" style="width: 1200px;height:200px; padding-top:0px"></div>
       <!-- <div class="float" id="main2" style="width: 500px;height:600px;"></div>
       <div class="float" id="main1" style="width: 500px;height:600px;"></div> -->
     </el-card>
@@ -29,10 +30,10 @@ export default {
         tooltip: {
           trigger: 'item'
         },
-        legend: {
-          orient: 'vertical',
-          left: 'left'
-        },
+        // legend: {
+        //   orient: 'vertical',
+        //   left: 'left'
+        // },
         color: [
           '#91cc75',
           '#fac858',
@@ -45,9 +46,10 @@ export default {
         ],
         series: [
           {
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: true,
             name: '访问来源',
             type: 'pie',
-            radius: '50%',
             data: [
               { value: 0, name: '已发货' },
               { value: 0, name: '未发货' }
@@ -74,32 +76,60 @@ export default {
         },
         yAxis: {
           name: '商品名称',
-          axisLabel:{
-          },
+          axisLabel: {},
           type: 'category',
           data: ['iPhone X', 'iPhone 11', 'iPhone 12', '小米电视 EA55']
         },
         xAxis: {
-          name: '商品销量',
+          name: '件',
           type: 'value'
         },
+
+        color: ['#9a60b4'],
         series: [
           {
             name: '销量',
             data: [120, 200, 150],
-            type: 'bar'
+            type: 'bar',
+
+            label: {
+              show: true
+            }
           }
-        ],
-        color: [
-          '#5470c6',
-          '#91cc75',
-          '#fac858',
-          '#ee6666',
-          '#73c0de',
-          '#3ba272',
-          '#fc8452',
-          '#9a60b4',
-          '#ea7ccc'
+        ]
+      },
+      option3: {
+        title: {
+          text: '商店营业额'
+        },
+        // tooltip: {
+        //   trigger: 'axis',
+        //   axisPointer: {
+        //     type: 'shadow'
+        //   }
+        // },
+        yAxis: {
+          name: '商品名称',
+          axisLabel: {},
+          type: 'category',
+          data: ['商店营业额']
+        },
+        xAxis: {
+          name: '元',
+          type: 'value'
+        },
+
+        color: ['#9a60b4'],
+        series: [
+          {
+            name: '销量',
+            data: [120],
+            type: 'bar',
+
+            label: {
+              show: true
+            }
+          }
         ]
       },
       ordersList: {},
@@ -166,6 +196,11 @@ export default {
       this.option2.series[0].data[1] = i11;
       this.option2.series[0].data[2] = i12;
       this.option2.series[0].data[3] = xiaomi;
+
+      const total = this.ordersList.reduce((total, item) => {
+        return total += item.order_price
+      }, 0)
+      this.option3.series[0].data[0] = total
     }
   },
   async mounted() {
@@ -185,6 +220,14 @@ export default {
       const result2 = this.option2;
       // console.log(result);
       myChart2.setOption(result2);
+
+      //------------------------------------------------------
+      var echarts3 = require('echarts');
+      var myChart3 = echarts3.init(document.getElementById('main3'));
+      // const result=_.merge(res.data,this.options)
+      const result3 = this.option3;
+      // console.log(result);
+      myChart3.setOption(result3);
     }, 1000);
   }
 };
@@ -192,7 +235,6 @@ export default {
 <style lang="less" scoped>
 .float {
   float: left;
-  // margin-left: 800px;
-  margin-left: 50px;
+  padding: 50px;
 }
 </style>
