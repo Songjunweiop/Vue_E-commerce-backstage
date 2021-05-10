@@ -78,7 +78,7 @@ export default {
           name: '商品名称',
           axisLabel: {},
           type: 'category',
-          data: ['iPhone X', 'iPhone 11', 'iPhone 12', '小米电视 EA55']
+          data: ['iPhone X', 'iPhone 11', 'iPhone 12', '小米电视 EA55', '小米透明电视', '小米电视大师']
         },
         xAxis: {
           name: '件',
@@ -89,7 +89,7 @@ export default {
         series: [
           {
             name: '销量',
-            data: [120, 200, 150],
+            data: [120, 200, 150, 900],
             type: 'bar',
 
             label: {
@@ -179,6 +179,8 @@ export default {
       let i11 = 0;
       let i12 = 0;
       let xiaomi = 0;
+      let xiaomitoumin = 0;
+      let dashi = 0;
       this.ordersList.map(item => {
         console.log('????????');
         if (item.order_fapiao_content == 'iPhone X') {
@@ -189,13 +191,19 @@ export default {
           i12 = i12 + parseInt(item.trade_no);
         } else if (item.order_fapiao_content == '小米电视 EA55 2022款') {
           xiaomi += parseInt(item.trade_no);
+        }else if(item.order_fapiao_content == '小米透明电视') {
+          xiaomitoumin += parseInt(item.trade_no)
+        } else if(item.order_fapiao_content == '小米电视大师') {
+          dashi += parseInt(item.trade_no)
         }
       });
-      console.log(ix, i11, i12);
+      console.log(ix, i11, i12, xiaomitoumin);
       this.option2.series[0].data[0] = ix;
       this.option2.series[0].data[1] = i11;
       this.option2.series[0].data[2] = i12;
       this.option2.series[0].data[3] = xiaomi;
+      this.option2.series[0].data[4] = xiaomitoumin;
+      this.option2.series[0].data[5] = dashi;
 
       const total = this.ordersList.reduce((total, item) => {
         return total += item.order_price
