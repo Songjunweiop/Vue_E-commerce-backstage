@@ -10,10 +10,20 @@
     <!-- 卡片视图 -->
     <el-card>
       <el-row :gutter="10">
-        <el-alert title="添加商品信息" type="info" center show-icon :clostable="false"></el-alert>
+        <el-alert
+          title="添加商品信息"
+          type="info"
+          center
+          show-icon
+          :clostable="false"
+        ></el-alert>
       </el-row>
       <el-row :gutter="10">
-        <el-steps align-center :active="activeIndex-0" finish-status="success">
+        <el-steps
+          align-center
+          :active="activeIndex - 0"
+          finish-status="success"
+        >
           <el-step title="基本信息"></el-step>
           <el-step title="商品参数"></el-step>
           <el-step title="商品属性"></el-step>
@@ -52,22 +62,40 @@
               <el-cascader
                 v-model="addForm.goods_cat"
                 :options="catelist"
-                :props="{ expandTrigger: 'hover',value:'cat_id',label:'cat_name',children:'children' }"
+                :props="{
+                  expandTrigger: 'hover',
+                  value: 'cat_id',
+                  label: 'cat_name',
+                  children: 'children',
+                }"
                 @change="handleChange"
               ></el-cascader>
             </el-form-item>
           </el-tab-pane>
 
           <el-tab-pane label="商品参数" name="1">
-            <el-form-item :label="item.attr_name" v-for="(item,i) in manyTableData" :key="i">
+            <el-form-item
+              :label="item.attr_name"
+              v-for="(item, i) in manyTableData"
+              :key="i"
+            >
               <el-checkbox-group v-model="item.attr_vals">
-                <el-checkbox border :label="cb" v-for="(cb,i) in item.attr_vals" :key="i"></el-checkbox>
+                <el-checkbox
+                  border
+                  :label="cb"
+                  v-for="(cb, i) in item.attr_vals"
+                  :key="i"
+                ></el-checkbox>
               </el-checkbox-group>
             </el-form-item>
           </el-tab-pane>
 
           <el-tab-pane label="商品属性" name="2">
-            <el-form-item :label="item.attr_name" v-for="(item,i) in onlyTableData" :key="i">
+            <el-form-item
+              :label="item.attr_name"
+              v-for="(item, i) in onlyTableData"
+              :key="i"
+            >
               <el-input v-model="item.attr_vals"></el-input>
             </el-form-item>
           </el-tab-pane>
@@ -88,7 +116,9 @@
           <el-tab-pane label="商品内容" name="4">
             <quill-editor v-model="addForm.goods_introduce"></quill-editor>
             <!-- 添加商品的按钮 -->
-            <el-button type="primary" class="btnAdd" @click="add" round>添加商品</el-button>
+            <el-button type="primary" class="btnAdd" @click="add" round
+              >添加商品</el-button
+            >
           </el-tab-pane>
         </el-tabs>
       </el-form>
@@ -99,10 +129,10 @@
 export default {
   data() {
     return {
-      activeIndex:'0',
-      addForm:{
-        goods_cat:[],
-        attrs:[],
+      activeIndex: '0',
+      addForm: {
+        goods_cat: [],
+        attrs: [],
         goods_name: '',
         goods_price: 0,
         goods_weight: 0,
@@ -110,75 +140,93 @@ export default {
         // 图片的数组
         pics: [],
         // 商品的详情描述
-        goods_introduce: ''
+        goods_introduce: '',
       },
-      addFormRules:{
-        goods_name:[{required: true, message:'请输入商品名称', trigger: 'blur'}],
-        goods_price:[{required: true, message:'请输入商品价格', trigger: 'blur'}],
-        goods_weight:[{required: true, message:'请输入商品重量', trigger: 'blur'}],
-        goods_number:[{required: true, message:'请输入商品数量', trigger: 'blur'}],
-        goods_cat:[{required: true, message:'请选择商品分类', trigger: 'blur'}],
+      addFormRules: {
+        goods_name: [
+          { required: true, message: '请输入商品名称', trigger: 'blur' },
+        ],
+        goods_price: [
+          { required: true, message: '请输入商品价格', trigger: 'blur' },
+        ],
+        goods_weight: [
+          { required: true, message: '请输入商品重量', trigger: 'blur' },
+        ],
+        goods_number: [
+          { required: true, message: '请输入商品数量', trigger: 'blur' },
+        ],
+        goods_cat: [
+          { required: true, message: '请选择商品分类', trigger: 'blur' },
+        ],
       },
-      catelist:[],
-      manyTableData:[],
-      onlyTableData:[],
+      catelist: [],
+      manyTableData: [],
+      onlyTableData: [],
       // 上传图片的URL地址
       uploadURL: 'http://127.0.0.1:8888/api/private/v1/upload',
       // 图片上传组件的headers请求头对象
       headerObj: {
-        Authorization: window.sessionStorage.getItem('token')
+        Authorization: window.sessionStorage.getItem('token'),
       },
       previewPath: '',
-      previewVisible: false
+      previewVisible: false,
     }
   },
-  methods:{
-    async getCateList(){
-      const {data:res} = await this.$http.get('categories')
-      if(res.meta.status!==200) return this.$message.error(res.meta.msg)
-      this.catelist=res.data
+  methods: {
+    async getCateList() {
+      const { data: res } = await this.$http.get('categories')
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.catelist = res.data
       // console.log(this.catelist)
     },
-    handleChange(){
+    handleChange() {
       console.log(this.addForm)
     },
-    beforeleave(activeName,oldActiveName){
+    beforeleave(activeName, oldActiveName) {
       console.log(this.addForm)
-      if(oldActiveName==='0' & this.addForm.goods_cat.length !==3){
+      if ((oldActiveName === '0') & (this.addForm.goods_cat.length !== 3)) {
         this.$message.error('请先选择商品分类')
         return false
       }
     },
-    async tabClicked(){
-      if(this.activeIndex==='1'){
-        const {data:res} = await this.$http.get(`categories/${this.cateId}/attributes`,{
-          params:{
-            sel:'many'
+    async tabClicked() {
+      if (this.activeIndex === '1') {
+        const { data: res } = await this.$http.get(
+          `categories/${this.cateId}/attributes`,
+          {
+            params: {
+              sel: 'many',
+            },
           }
-        })
+        )
         console.log(res)
-        if(res.meta.status!==200) return this.$message.error(res.meta.msg)
-        res.data.forEach(item=>{
-          item.attr_vals=item.attr_vals.length === 0 ? [] : item.attr_vals.split(',')
+        if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+        res.data.forEach(item => {
+          item.attr_vals =
+            item.attr_vals.length === 0 ? [] : item.attr_vals.split(',')
         })
 
-        this.manyTableData=res.data
-      }else if(this.activeIndex==='2'){
-        const{data:res} =await this.$http.get(`categories/${this.cateId}/attributes`,{
-          params:{
-            sel:'only'
+        this.manyTableData = res.data
+      } else if (this.activeIndex === '2') {
+        const { data: res } = await this.$http.get(
+          `categories/${this.cateId}/attributes`,
+          {
+            params: {
+              sel: 'only',
+            },
           }
-        })
-        if(res.meta.status!==200) return this.$message.error('获取静态属性失败')
+        )
+        if (res.meta.status !== 200)
+          return this.$message.error('获取静态属性失败')
         console.log(res.data)
-        this.onlyTableData=res.data
+        this.onlyTableData = res.data
       }
     },
-    handlePreview(file){
+    handlePreview(file) {
       this.previewPath = file.response.data.url
       this.previewVisible = true
     },
-    handleRemove(file){
+    handleRemove(file) {
       // 1. 获取将要删除的图片的临时路径
       const filePath = file.response.data.tmp_path
       // 2. 从 pics 数组中，找到这个图片对应的索引值
@@ -188,8 +236,8 @@ export default {
       console.log(this.addForm)
     },
     handleSuccess(response) {
-      console.log('response',response)
-      console.log('addForm',this.addForm)
+      console.log('response', response)
+      console.log('addForm', this.addForm)
       // 1. 拼接得到一个图片信息对象
       const picInfo = { pic: response.data.tmp_path }
       // 2. 将图片信息对象，push 到pics数组中
@@ -210,7 +258,7 @@ export default {
         this.manyTableData.forEach(item => {
           const newInfo = {
             attr_id: item.attr_id,
-            attr_value: item.attr_vals.join(' ')
+            attr_value: item.attr_vals.join(' '),
           }
           this.addForm.attrs.push(newInfo)
         })
@@ -233,24 +281,24 @@ export default {
         this.$message.success('添加商品成功！')
         this.$router.push('/goods')
       })
-    }
+    },
   },
-  created(){
+  created() {
     this.getCateList()
     console.log(this.uploadURL)
   },
-  computed:{
-    cateId(){
-      if(this.addForm.goods_cat.length === 3) {
+  computed: {
+    cateId() {
+      if (this.addForm.goods_cat.length === 3) {
         return this.addForm.goods_cat[2]
       }
       return null
-    }
-  }
+    },
+  },
 }
-</script> 
+</script>
 <style lang="less" scope>
-.el-checkbox{
+.el-checkbox {
   margin: 0 5px 0 0 !important;
 }
 .previewImg {
@@ -260,5 +308,4 @@ export default {
 .btnAdd {
   margin-top: 15px;
 }
-
 </style>

@@ -165,7 +165,7 @@ export default {
         // 当前的页数
         pagenum: 1,
         // 当前每页显示多少条数据
-        pagesize: 10
+        pagesize: 10,
       },
       userlist: [],
       total: 0,
@@ -179,24 +179,29 @@ export default {
       addFormRules: {
         username: [
           { required: true, message: '别忘了输入账号哦', trigger: 'blur' },
-          { min: 1, max: 10, message: '长度在 1 到 10个字符', trigger: 'blur' }
+          { min: 1, max: 10, message: '长度在 1 到 10个字符', trigger: 'blur' },
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
+          {
+            min: 6,
+            max: 15,
+            message: '长度在 6 到 15 个字符',
+            trigger: 'blur',
+          },
         ],
         email: [
           { required: true, message: '请输入邮箱地址', trigger: 'blur' },
           {
             type: 'email',
             message: '请输入正确的邮箱地址',
-            trigger: ['blur', 'change']
-          }
+            trigger: ['blur', 'change'],
+          },
         ],
         mobile: [
-          { required: true, message: '请输入电话号码', trigger: 'blur' }
+          { required: true, message: '请输入电话号码', trigger: 'blur' },
           // { validator: checkMobile, trigger: 'blur' }
-        ]
+        ],
       },
 
       editDialogVisible: false,
@@ -204,7 +209,7 @@ export default {
         username: '',
         email: '',
         mobile: '',
-        qq: ''
+        qq: '',
       },
       editFormRules: {
         email: [
@@ -212,13 +217,13 @@ export default {
           {
             type: 'email',
             message: '请输入正确的邮箱地址',
-            trigger: ['blur', 'change']
-          }
+            trigger: ['blur', 'change'],
+          },
         ],
         mobile: [
-          { required: true, message: '请输入电话号码', trigger: 'blur' }
+          { required: true, message: '请输入电话号码', trigger: 'blur' },
           // { validator: checkMobile, trigger: 'blur' }
-        ]
+        ],
       },
 
       setRoleDialogVisible: false,
@@ -226,116 +231,113 @@ export default {
       // 所有的角色列表
       rolesList: [],
       // 已选中的角色id
-      selectedRoleId: ''
-    };
+      selectedRoleId: '',
+    }
   },
   created() {
-    this.getUserList();
+    this.getUserList()
   },
   methods: {
     async getUserList() {
-      console.log('aaaaaaaaaaaaaaaaaaaaaaa');
+      console.log('aaaaaaaaaaaaaaaaaaaaaaa')
       const { data: res } = await this.$http.get('vips', {
         // params:this.queryInfo
         params: {
           query: this.queryInfo.query,
           pagenum: this.queryInfo.pagenum,
-          pagesize: this.queryInfo.pagesize
-        }
-      });
-      console.log(res);
+          pagesize: this.queryInfo.pagesize,
+        },
+      })
+      console.log(res)
       if (res.meta.status !== 200) {
-        return this.$message.error(res.meta.msg);
+        return this.$message.error(res.meta.msg)
       }
-      console.log(res);
-      this.userlist = res.data.users;
-      this.total = res.data.total;
+      console.log(res)
+      this.userlist = res.data.users
+      this.total = res.data.total
     },
     // 监听pagesize改变的事件
     handleSizeChange(newSize) {
-      console.log(newSize);
+      console.log(newSize)
       // if (this.queryInfo.pagenum * newSize > this.total) return
-      this.queryInfo.pagesize = newSize;
-      this.getUserList();
+      this.queryInfo.pagesize = newSize
+      this.getUserList()
     },
     // 监听页码值改变的事件
     handleCurrentChange(newPage) {
-      this.queryInfo.pagenum = newPage;
-      this.getUserList();
+      this.queryInfo.pagenum = newPage
+      this.getUserList()
     },
     // 监听Switch开关状态的改变
     async userStateChanged(userinfo) {
-      console.log(userinfo);
+      console.log(userinfo)
       const { data: res } = await this.$http.put(
         `users/${userinfo.id}/state/${userinfo.mg_state}`
-      );
+      )
       if (res.meta.status != 200) {
-        userinfo.mg_state = !userinfo.mg_state;
-        return this.$message.error(res.meta.msg);
+        userinfo.mg_state = !userinfo.mg_state
+        return this.$message.error(res.meta.msg)
       }
-      this.$message.success('更新会员状态成功');
+      this.$message.success('更新会员状态成功')
     },
     //监听添加会员对话框关闭事件
     addDialogClosed() {
-      this.$refs.addFormRef.resetFields(); //重置表单为空白
+      this.$refs.addFormRef.resetFields() //重置表单为空白
     },
     addUser() {
       //先进行校验
       this.$refs.addFormRef.validate(async valid => {
-        if (!valid) return;
+        if (!valid) return
 
         //正确则可以发起添加请求
-        const { data: res } = await this.$http.post('users', this.addForm);
+        const { data: res } = await this.$http.post('users', this.addForm)
         if (res.meta.status !== 201) {
-          this.$message.error(res.meta.msg);
+          this.$message.error(res.meta.msg)
         }
-        this.$message.success('添加会员成功');
-        this.adddialogVisible = false;
-        this.getUserList();
-      });
+        this.$message.success('添加会员成功')
+        this.adddialogVisible = false
+        this.getUserList()
+      })
     },
     async showEditDialog(id) {
-      console.log(id);
-      const { data: res } = await this.$http.get('vips/' + id);
+      console.log(id)
+      const { data: res } = await this.$http.get('vips/' + id)
       if (res.meta.status !== 200) {
-        return this.$message.error(res.meta.msg);
+        return this.$message.error(res.meta.msg)
       }
-      this.editForm = res.data;
+      this.editForm = res.data
       console.log(this.editForm)
-      this.editDialogVisible = true;
+      this.editDialogVisible = true
     },
     //监听修改会员对话框关闭的事件
     editDialogClosed() {
-      this.$refs.editFormRef.resetFields(); //重置
+      this.$refs.editFormRef.resetFields() //重置
     },
     //修改会员信息提交
     editUserChange() {
       this.$refs.editFormRef.validate(async valid => {
-        console.log(valid);
-        if (!valid) return;
+        console.log(valid)
+        if (!valid) return
 
         //正确则发起请求
-        console.log(this.editForm);
-        const { data: res } = await this.$http.put(
-          'vips/' + this.editForm.id,
-          {
-            email: this.editForm.email,
-            mobile: this.editForm.mobile,
-            qq: this.editForm.qq
-          }
-        );
+        console.log(this.editForm)
+        const { data: res } = await this.$http.put('vips/' + this.editForm.id, {
+          email: this.editForm.email,
+          mobile: this.editForm.mobile,
+          qq: this.editForm.qq,
+        })
         if (res.meta.status !== 200) {
-          return this.$message.error(res.meta.msg);
+          return this.$message.error(res.meta.msg)
         }
         //成功后关闭对话框，重新加载列表，提示会员成功
-        this.editDialogVisible = false;
-        this.getUserList();
-        this.$message.success('更新会员成功！');
-      });
+        this.editDialogVisible = false
+        this.getUserList()
+        this.$message.success('更新会员成功！')
+      })
     },
     //删除会员
     async removeUser(id) {
-      console.log(id);
+      console.log(id)
       //弹框询问
       const confirmResult = await this.$confirm(
         '此操作将永久删除该会员, 是否继续?',
@@ -343,26 +345,26 @@ export default {
         {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
         }
-      ).catch(err => err);
-      console.log(confirmResult);
+      ).catch(err => err)
+      console.log(confirmResult)
 
       if (confirmResult !== 'confirm') {
-        return this.$message.info('已取消删除');
+        return this.$message.info('已取消删除')
       }
 
-      const { data: res } = await this.$http.delete('vips/' + id);
-      console.log(res);
+      const { data: res } = await this.$http.delete('vips/' + id)
+      console.log(res)
       if (res.meta.status !== 200) {
-        return this.$message.error(res.meta.msg);
+        return this.$message.error(res.meta.msg)
       }
 
-      this.$message.success('删除会员成功！');
-      this.getUserList();
-    }
-  }
-};
+      this.$message.success('删除会员成功！')
+      this.getUserList()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

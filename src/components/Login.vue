@@ -14,7 +14,11 @@
         :rules="loginFormRules"
       >
         <el-form-item prop="username">
-          <el-input placeholder="用户名或邮箱" prefix-icon="el-icon-user" v-model="form_login.username"></el-input>
+          <el-input
+            placeholder="用户名或邮箱"
+            prefix-icon="el-icon-user"
+            v-model="form_login.username"
+          ></el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input
@@ -39,52 +43,52 @@ export default {
   data() {
     return {
       form_login: {
-        username: "admin",
-        password: "123456"
+        username: 'admin',
+        password: '123456',
       },
       loginFormRules: {
         username: [
-          { required: true, message: "别忘了输入账号哦", trigger: "blur" },
-          { min: 1, max: 10, message: "长度在 3 到 5 个字符", trigger: "blur" }
+          { required: true, message: '别忘了输入账号哦', trigger: 'blur' },
+          { min: 1, max: 10, message: '长度在 3 到 5 个字符', trigger: 'blur' },
         ],
         password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 1, max: 15, message: "长度在 3 到 5 个字符", trigger: "blur" }
-        ]
-      }
-    };
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 1, max: 15, message: '长度在 3 到 5 个字符', trigger: 'blur' },
+        ],
+      },
+    }
   },
   methods: {
     // 点击重置
     rest() {
-      console.log("this");
-      this.$refs.LoginRef.resetFields(); //element中的resetFields方法
+      console.log('this')
+      this.$refs.LoginRef.resetFields() //element中的resetFields方法
     },
     login() {
       this.$refs.LoginRef.validate(async valid => {
         // console.log(valid);
         // node： async（异步）和 await 是用来简化 promise
-        if (!valid) return;
-        const { data: res } = await this.$http.post("login", this.form_login);
-        console.log(res);
+        if (!valid) return
+        const { data: res } = await this.$http.post('login', this.form_login)
+        console.log(res)
         if (res.meta.status !== 200)
           return this.$notify({
-            title: "错误",
-            message: "登录失败",
-            type: "error"
-          });
+            title: '错误',
+            message: '登录失败',
+            type: 'error',
+          })
         this.$notify.success({
-          title: "登录成功",
-          message: `欢迎回来~ 亲爱的${res.data.username}`
-        });
-        window.sessionStorage.setItem("token",res.data.token);
-        window.sessionStorage.setItem("username",res.data.username);
-        window.sessionStorage.setItem("roleId",res.data.rid);
-        this.$router.push("/home")
-      });
-    }
-  }
-};
+          title: '登录成功',
+          message: `欢迎回来~ 亲爱的${res.data.username}`,
+        })
+        window.sessionStorage.setItem('token', res.data.token)
+        window.sessionStorage.setItem('username', res.data.username)
+        window.sessionStorage.setItem('roleId', res.data.rid)
+        this.$router.push('/home')
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>
@@ -93,7 +97,7 @@ export default {
   height: 100%;
   background-image: url('../assets/images/shuipao.jpg');
   background-size: cover;
-  background-position:0 60%;
+  background-position: 0 60%;
 }
 .login_box {
   // background-color: white;
@@ -139,10 +143,10 @@ export default {
   margin-top: 50px;
 }
 .el-button.is-round {
-    border-radius: 20px;
-    padding: 12px 50px;
+  border-radius: 20px;
+  padding: 12px 50px;
 }
-.el-button+.el-button {
-    margin-left: 30px;
+.el-button + .el-button {
+  margin-left: 30px;
 }
 </style>

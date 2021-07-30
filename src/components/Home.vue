@@ -2,7 +2,12 @@
   <el-container class="home-container">
     <el-header>
       <div
-        style="width: 210px; background-color: #222d31;height: 60px; text-align: center"
+        style="
+          width: 210px;
+          background-color: #222d31;
+          height: 60px;
+          text-align: center;
+        "
       >
         <!-- <div class="tog_button" @click="toggleCollapse">| | |</div> -->
         <div class="tog_button" @click="toggleCollapse">
@@ -12,11 +17,11 @@
       <div>
         <img src="../assets/images/loginX.png" alt />
         后台管理系统
-        <div style="margin-left: 10px" ></div>
+        <div style="margin-left: 10px"></div>
         <div style="font-size: 20px">
-          <i class="fab fa-accusoft "></i>
+          <i class="fab fa-accusoft"></i>
         </div>
-        
+
         <!-- <div> -->
         <!-- <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="seainfo"></el-input> -->
         <!-- <el-button type="primary" round @click="search">Go</el-button> -->
@@ -52,7 +57,6 @@
       <el-aside :width="isCollapse ? '56px' : '210px'">
         <!-- <div class="tog_button" @click="toggleCollapse">| | |</div> -->
         <el-menu
-          
           background-color="#222d31"
           text-color="#bdc9d0"
           active-text-color="#409EFF"
@@ -69,11 +73,10 @@
             </template>
             <el-menu-item index="vips">
               <i :class="myiconsOBJ[110]"></i>
-                &nbsp;
-                <span>会员列表</span>
+              &nbsp;
+              <span>会员列表</span>
             </el-menu-item>
           </el-submenu>
-
 
           <el-submenu
             :index="item.id + ''"
@@ -117,8 +120,8 @@
 export default {
   created() {
     this.getMenuList(),
-      (this.master = window.sessionStorage.getItem('username'));
-    this.activePath = window.sessionStorage.getItem('activePath');
+      (this.master = window.sessionStorage.getItem('username'))
+    this.activePath = window.sessionStorage.getItem('activePath')
   },
   data() {
     return {
@@ -126,55 +129,56 @@ export default {
       seainfo: '',
       menulist: [],
       iconsOBJ: {
-        '125': 'el-icon-s-custom',
-        '103': 'el-icon-s-claim',
-        '101': 'el-icon-s-goods',
-        '102': 'el-icon-s-operation',
-        '145': 'el-icon-s-marketing'
+        125: 'el-icon-s-custom',
+        103: 'el-icon-s-claim',
+        101: 'el-icon-s-goods',
+        102: 'el-icon-s-operation',
+        145: 'el-icon-s-marketing',
       },
       myiconsOBJ: {
-        '110': 'fas fa-users',
-        '111': 'fas fa-user-tag',
-        '112': 'fas fa-hand-paper',
-        '104': 'fas fa-box-open',
-        '115': 'fas fa-clipboard-check',
-        '121': 'fas fa-paste',
-        '107': 'fas fa-file-alt',
-        '146': 'fas fa-chart-line',
+        110: 'fas fa-users',
+        111: 'fas fa-user-tag',
+        112: 'fas fa-hand-paper',
+        104: 'fas fa-box-open',
+        115: 'fas fa-clipboard-check',
+        121: 'fas fa-paste',
+        107: 'fas fa-file-alt',
+        146: 'fas fa-chart-line',
       },
       isCollapse: false, //是否折叠
-      activePath: '' //被激活的链接地址
-    };
+      activePath: '', //被激活的链接地址
+    }
   },
   methods: {
     search() {},
     handleCommand(command) {
       if (command === 'a') {
-        window.sessionStorage.clear();
-        this.$router.push('/login');
+        window.sessionStorage.clear()
+        this.$router.push('/login')
       }
     },
     logout() {
-      window.sessionStorage.clear();
-      this.$router.push('/login');
+      window.sessionStorage.clear()
+      this.$router.push('/login')
     },
     // 获取所有菜单
     async getMenuList() {
-      const { data: res } = await this.$http.get('menus');
-      console.log(res);
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.menulist = res.data;
+      const { data: res } = await this.$http.get('menus')
+      console.log(res)
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.menulist = res.data
+      console.log(this.menulist)
     },
     //点击按钮，切换展开收缩
     toggleCollapse() {
-      this.isCollapse = !this.isCollapse;
+      this.isCollapse = !this.isCollapse
     },
     //保存链接的激活状态
     saveNavState(activePath) {
-      window.sessionStorage.setItem('activePath', activePath);
-    }
-  }
-};
+      window.sessionStorage.setItem('activePath', activePath)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>
@@ -243,7 +247,7 @@ export default {
     border-right: none;
   }
   .el-submenu {
-    margin-right: 10px;
+    margin-right: 0px;
   }
 }
 

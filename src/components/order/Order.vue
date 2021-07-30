@@ -161,7 +161,7 @@
 </template>
 
 <script>
-import cityData from './citydata.js';
+import cityData from './citydata.js'
 
 export default {
   data() {
@@ -169,82 +169,82 @@ export default {
       queryInfo: {
         query: '',
         pagenum: 1,
-        pagesize: 10
+        pagesize: 10,
       },
       total: 0,
       orderlist: [],
       addressVisible: false,
       addressForm: {
         address1: [],
-        address2: ''
+        address2: '',
       },
       addressFormRules: {
         address1: [
-          { required: true, message: '请选择省市区县', trigger: 'blur' }
+          { required: true, message: '请选择省市区县', trigger: 'blur' },
         ],
         address2: [
-          { required: true, message: '请填写详细地址', trigger: 'blur' }
-        ]
+          { required: true, message: '请填写详细地址', trigger: 'blur' },
+        ],
       },
       cityData,
       progressVisible: false,
-      progressInfo: []
-    };
+      progressInfo: [],
+    }
   },
   created() {
-    this.getOrderList();
+    this.getOrderList()
   },
   methods: {
     async getOrderList() {
       const { data: res } = await this.$http.get('orders', {
-        params: this.queryInfo
-      });
+        params: this.queryInfo,
+      })
 
       if (res.meta.status !== 200) {
-        return this.$message.error('获取订单列表失败！');
+        return this.$message.error('获取订单列表失败！')
       }
 
-      console.log(res);
-      this.total = res.data.total;
-      this.orderlist = res.data.order;
+      console.log(res)
+      this.total = res.data.total
+      this.orderlist = res.data.order
     },
     handleSizeChange(newSize) {
-      this.queryInfo.pagesize = newSize;
-      this.getOrderList();
+      this.queryInfo.pagesize = newSize
+      this.getOrderList()
     },
     handleCurrentChange(newPage) {
-      this.queryInfo.pagenum = newPage;
-      this.getOrderList();
+      this.queryInfo.pagenum = newPage
+      this.getOrderList()
     },
     // 展示修改地址的对话框
     showBox() {
-      this.addressVisible = true;
+      this.addressVisible = true
     },
     addressDialogClosed() {
-      this.$refs.addressFormRef.resetFields();
+      this.$refs.addressFormRef.resetFields()
     },
     async deleteById(id) {
-      console.log(id);
+      console.log(id)
       const confirmResult = await this.$confirm(
         '您确定要删除该订单吗？',
         `${this.master}:`,
         {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
         }
-      ).catch(err => err);
-      console.log(confirmResult);
+      ).catch(err => err)
+      console.log(confirmResult)
       if (confirmResult !== 'confirm') {
-        return this.$message.info('已取消删除');
+        return this.$message.info('已取消删除')
       }
-      const { data: res } = await this.$http.delete('orders/' + id);
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.$message.success('删除订单成功！');
-      this.getOrderList();
-    }
-  }
-};
+      const { data: res } = await this.$http.delete('orders/' + id)
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.$message.success('删除订单成功！')
+      this.getOrderList()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

@@ -17,7 +17,7 @@
         type="warning"
       ></el-alert>
 
-      <el-row style="margin:15px 0;">
+      <el-row style="margin: 15px 0">
         <el-col>
           <span>选择商品分类：</span>
           <el-cascader
@@ -27,7 +27,7 @@
               expandTrigger: 'hover',
               value: 'cat_id',
               label: 'cat_name',
-              children: 'children'
+              children: 'children',
             }"
             @change="handleChange"
           ></el-cascader>
@@ -48,7 +48,7 @@
             <el-table-column type="expand">
               <template slot-scope="scope">
                 <el-tag
-                  style="margin:0 5px;"
+                  style="margin: 0 5px"
                   v-for="(item, i) in scope.row.attr_vals"
                   :key="i"
                   type="success"
@@ -130,7 +130,7 @@
             <el-table-column type="expand">
               <template slot-scope="scope">
                 <el-tag
-                  style="margin:0 5px;"
+                  style="margin: 0 5px"
                   v-for="(item, i) in scope.row.attr_vals"
                   :key="i"
                   type="success"
@@ -263,31 +263,30 @@ export default {
       onlyTabData: [],
       addVisible: false,
       addForm: {
-        attr_name: ''
+        attr_name: '',
       },
       addFormRules: {
         attr_name: [
-          { required: true, message: '请输入参数名称', trigger: 'blur' }
-        ]
+          { required: true, message: '请输入参数名称', trigger: 'blur' },
+        ],
       },
       editVisible: false,
       editForm: {},
       editFormRules: {},
       // 控制按钮与文本输入框的显示
       inputVisible: false,
-      inputValue: ''
-    };
+      inputValue: '',
+    }
   },
   created() {
-    this.getCateList();
+    this.getCateList()
   },
   methods: {
     async getCateList() {
-      const { data: res } = await this.$http.get('categories');
-      if (res.meta.status !== 200)
-        return this.$message.error(res.meta.msg);
-      this.catelist = res.data;
-      console.log(this.catelist);
+      const { data: res } = await this.$http.get('categories')
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.catelist = res.data
+      console.log(this.catelist)
     },
     async getParamsData() {
       // console.log(this.selectedCateKeys)
@@ -295,102 +294,104 @@ export default {
       const { data: res } = await this.$http.get(
         `categories/${this.cateId}/attributes`,
         {
-          params: { sel: this.activeName }
+          params: { sel: this.activeName },
         }
-      );
+      )
       if (res.meta.status !== 200)
-        return this.$message.error('请选择一个商品分类');
+        return this.$message.error('请选择一个商品分类')
       // console.log(res.data)
       res.data.forEach(item => {
-        item.attr_vals = item.attr_vals ? item.attr_vals.split(',') : [];
+        item.attr_vals = item.attr_vals ? item.attr_vals.split(',') : []
         // 控制文本显示隐藏
-        item.inputVisible = false;
-        item.inputValue = '';
-      });
+        item.inputVisible = false
+        item.inputValue = ''
+      })
 
-      console.log(res.data);
+      console.log(res.data)
       if (this.activeName === 'many') {
-        this.manyTabData = res.data;
+        this.manyTabData = res.data
       } else {
-        this.onlyTabData = res.data;
+        this.onlyTabData = res.data
       }
     },
     // 级联选择框选中项变化，出发事件
     handleChange() {
-      this.getParamsData();
+      this.getParamsData()
     },
 
     handleTabClick() {
-      console.log(this.activeName);
-      this.getParamsData();
+      console.log(this.activeName)
+      this.getParamsData()
     },
     addVisibleClosed() {
-      this.$refs.addFormRef.resetFields();
+      this.$refs.addFormRef.resetFields()
     },
     async add() {
       const { data: res } = await this.$http.post(
         `categories/${this.cateId}/attributes`,
         {
           attr_name: this.addForm.attr_name,
-          attr_sel: this.activeName
+          attr_sel: this.activeName,
         }
-      );
+      )
       if (res.meta.status !== 201)
-        return this.$message.error('添加' + this.titleText + '失败' + res.meta.msg);
-      this.$message.success('添加' + this.titleText + '成功');
-      this.addVisible = false;
-      this.getParamsData();
+        return this.$message.error(
+          '添加' + this.titleText + '失败' + res.meta.msg
+        )
+      this.$message.success('添加' + this.titleText + '成功')
+      this.addVisible = false
+      this.getParamsData()
     },
 
     async showeditVisible(id) {
       const { data: res } = await this.$http.get(
         `categories/${this.cateId}/attributes/${id}`,
         {
-          params: { attr_sel: this.activeName }
+          params: { attr_sel: this.activeName },
         }
-      );
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.$message.success('获取成功');
-      this.editForm = res.data;
-      this.editVisible = true;
+      )
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.$message.success('获取成功')
+      this.editForm = res.data
+      this.editVisible = true
     },
     editVisibleClosed() {
-      this.$refs.editFormRef.resetFields();
+      this.$refs.editFormRef.resetFields()
     },
     async edit() {
       const { data: res } = await this.$http.put(
         `categories/${this.cateId}/attributes/${this.editForm.attr_id}`,
         {
           attr_sel: this.activeName,
-          attr_name: this.editForm.attr_name
+          attr_name: this.editForm.attr_name,
         }
-      );
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.$message.success('修改参数成功');
-      this.editVisible = false;
-      this.getParamsData();
+      )
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.$message.success('修改参数成功')
+      this.editVisible = false
+      this.getParamsData()
     },
     async remove(id) {
-      console.log(id);
+      console.log(id)
       const confirmResult = await this.$confirm(
         '此操作将永久删除该' + this.titleText + '属性, 是否继续?',
         '提示',
         {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
         }
-      ).catch(err => err);
+      ).catch(err => err)
 
       if (confirmResult !== 'confirm') {
-        return this.$message.info('已取消删除');
+        return this.$message.info('已取消删除')
       }
       const { data: res } = await this.$http.delete(
         `categories/${this.cateId}/attributes/${id}`
-      );
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.$message.success('删除成功');
-      this.getParamsData();
+      )
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.$message.success('删除成功')
+      this.getParamsData()
     },
     async saveAttrVals(row) {
       const { data: res } = await this.$http.put(
@@ -398,55 +399,55 @@ export default {
         {
           attr_name: row.attr_name,
           attr_sel: row.attr_sel,
-          attr_vals: row.attr_vals.join(',')
+          attr_vals: row.attr_vals.join(','),
         }
-      );
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.$message.success('修改参数项成功');
+      )
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.$message.success('修改参数项成功')
     },
     handleInputConfirm(row) {
       if (row.inputValue.trim().length === 0) {
-        row.inputValue = '';
-        row.inputVisible = false;
-        return;
+        row.inputValue = ''
+        row.inputVisible = false
+        return
       }
-      row.attr_vals.push(row.inputValue.trim());
-      row.inputValue = '';
-      row.inputVisible = false;
-      this.saveAttrVals(row);
+      row.attr_vals.push(row.inputValue.trim())
+      row.inputValue = ''
+      row.inputVisible = false
+      this.saveAttrVals(row)
     },
     showInput(row) {
-      row.inputVisible = true;
+      row.inputVisible = true
       this.$nextTick(_ => {
-        this.$refs.saveTagInput.$refs.input.focus();
-      });
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
     },
     handleClose(i, row) {
-      row.attr_vals.splice(i, 1);
-      this.saveAttrVals(row);
-    }
+      row.attr_vals.splice(i, 1)
+      this.saveAttrVals(row)
+    },
   },
   computed: {
     // 如果按钮需要被禁用
     isBtnDisabled() {
       if (this.selectedCateKeys.length !== 3) {
-        return true;
+        return true
       }
-      return false;
+      return false
     },
     // 当前选中的三级分类id
     cateId() {
       if (this.selectedCateKeys.length === 3) {
-        return this.selectedCateKeys[2];
+        return this.selectedCateKeys[2]
       }
-      return null;
+      return null
     },
     titleText() {
-      if (this.activeName === 'many') return '动态参数';
-      return '静态参数';
-    }
-  }
-};
+      if (this.activeName === 'many') return '动态参数'
+      return '静态参数'
+    },
+  },
+}
 </script>
 <style lang="less" scoped>
 .guandu {

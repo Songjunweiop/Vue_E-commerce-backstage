@@ -137,7 +137,7 @@
                   expandTrigger: 'hover',
                   value: 'cat_id',
                   label: 'cat_name',
-                  children: 'children'
+                  children: 'children',
                 }"
                 @change="handleChange"
               ></el-cascader>
@@ -153,8 +153,8 @@
               <el-table-column width="200px">
                 <template slot-scope="scope">
                   <el-tag
-                  effect="plain"
-                    style="margin:0 5px;"
+                    effect="plain"
+                    style="margin: 0 5px"
                     v-for="(item, i) in scope.row.attr_value"
                     :key="i"
                     type="success"
@@ -187,7 +187,7 @@ export default {
       queryInfo: {
         query: '',
         pagenum: 1,
-        pagesize: 10
+        pagesize: 10,
       },
       editDialogVisible: false,
       editForm: {},
@@ -195,76 +195,74 @@ export default {
       urlList: [],
       manyTabData: [],
       catelist: [],
-      selectedCateKeys: []
-    };
+      selectedCateKeys: [],
+    }
   },
   created() {
-    this.getGoodsList();
+    this.getGoodsList()
   },
   methods: {
     async getCateList() {
-      const { data: res } = await this.$http.get('categories');
-      if (res.meta.status !== 200)
-        return this.$message.error(res.meta.msg);
-      this.catelist = res.data;
-      console.log(this.catelist);
+      const { data: res } = await this.$http.get('categories')
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.catelist = res.data
+      console.log(this.catelist)
     },
     async getGoodsList() {
       const { data: res } = await this.$http.get('goods', {
         params: {
           query: this.queryInfo.query,
           pagenum: this.queryInfo.pagenum,
-          pagesize: this.queryInfo.pagesize
-        }
-      });
-      if (res.meta.status !== 200)
-        return this.$message.error(res.meta.msg);
-      this.$message.success('获取商品列表成功');
+          pagesize: this.queryInfo.pagesize,
+        },
+      })
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.$message.success('获取商品列表成功')
       // console.log(res)
-      this.goodslist = res.data.goods;
-      this.total = res.data.total;
+      this.goodslist = res.data.goods
+      this.total = res.data.total
       // console.log(this.queryInfo.query)
     },
     handleSizeChange(newSize) {
-      this.queryInfo.pagesize = newSize;
-      this.getGoodsList();
+      this.queryInfo.pagesize = newSize
+      this.getGoodsList()
     },
     handleCurrentChange(newPage) {
-      this.queryInfo.pagenum = newPage;
-      this.getGoodsList();
+      this.queryInfo.pagenum = newPage
+      this.getGoodsList()
     },
     async showEditDialog(id) {
-      this.getCateList();
+      this.getCateList()
 
-      this.url = '';
-      this.urlList = [];
-      const { data: res } = await this.$http.get('goods/' + id);
+      this.url = ''
+      this.urlList = []
+      const { data: res } = await this.$http.get('goods/' + id)
       // console.log(id)
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.editForm = res.data;
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.editForm = res.data
 
-      this.selectedCateKeys = JSON.parse('[' + res.data.goods_cat + ']');
+      this.selectedCateKeys = JSON.parse('[' + res.data.goods_cat + ']')
       // this.selectedCateKeys = res.data.goods_cat.split(',').map(Number);
 
       if (this.editForm.pics.length !== 0) {
-        this.url = this.editForm.pics[0].pics_sma_url;
-        this.urlList.push(this.editForm.pics[0].pics_big_url);
+        this.url = this.editForm.pics[0].pics_sma_url
+        this.urlList.push(this.editForm.pics[0].pics_big_url)
       }
 
       res.data.attrs.forEach(item => {
-        item.attr_value = item.attr_value ? item.attr_value.split(',') : [];
+        item.attr_value = item.attr_value ? item.attr_value.split(',') : []
         // 控制文本显示隐藏
-        item.inputVisible = false;
-        item.inputValue = '';
-      });
-      this.manyTabData = res.data.attrs;
+        item.inputVisible = false
+        item.inputValue = ''
+      })
+      this.manyTabData = res.data.attrs
 
       // console.log(this.url);
-      this.editDialogVisible = true;
-      console.log(this.selectedCateKeys);
+      this.editDialogVisible = true
+      console.log(this.selectedCateKeys)
     },
     handleChange() {
-      console.log(this.selectedCateKeys);
+      console.log(this.selectedCateKeys)
     },
     async editUserChange() {
       // console.log(this.editForm)
@@ -275,41 +273,41 @@ export default {
           goods_name: this.editForm.goods_name,
           goods_price: this.editForm.goods_price,
           goods_number: this.editForm.goods_number,
-          goods_weight: this.editForm.goods_weight
+          goods_weight: this.editForm.goods_weight,
         }
-      );
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
+      )
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
 
-      this.editDialogVisible = false;
-      this.getGoodsList();
+      this.editDialogVisible = false
+      this.getGoodsList()
       // this.$message.info('更新商品信息接口维护中');
     },
     async removeGood(id) {
-      console.log(id);
+      console.log(id)
       const confirmResult = await this.$confirm(
         '此操作将永久删除该商品, 是否继续?',
         '提示',
         {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
         }
-      ).catch(err => err);
-      console.log(confirmResult);
+      ).catch(err => err)
+      console.log(confirmResult)
 
       if (confirmResult !== 'confirm') {
-        return this.$message.info('已取消删除');
+        return this.$message.info('已取消删除')
       }
-      const { data: res } = await this.$http.delete('goods/' + id);
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.$message.success('删除商品成功！');
-      this.getGoodsList();
+      const { data: res } = await this.$http.delete('goods/' + id)
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.$message.success('删除商品成功！')
+      this.getGoodsList()
     },
     goAddpage() {
-      this.$router.push('/goods/add');
-    }
-  }
-};
+      this.$router.push('/goods/add')
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped></style>
